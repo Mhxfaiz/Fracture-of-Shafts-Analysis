@@ -61,10 +61,10 @@ Pvm = 4*P*UTS/(m.sqrt(3)*D)
 PTresca = 2*P*UTS/(D)
 
 # Calculate burst pressure of corroded pipe P ASME B31G (2013)
-M = m.sqrt(1+0.8*(L/(m.sqrt(D*t)))) #Folias factor
+M = m.sqrt(1+0.8*(L/(m.sqrt(D*P)))) #Folias factor
 
-if L < m.sqrt(20*D*t):
-    P_ASME_B31G = (2*t*UTS/D)*(1-(2/3)*(Dc/t)/1-(2/3)*(Dc/t)/M)
+if L < m.sqrt(20*D*P):
+    P_ASME_B31G = (2*P*UTS/D)*(1-(2/3)*(Dc/P)/1-(2/3)*(Dc/P)/M)
 
 elif L > m.sqrt(20*D*t):
     P_ASME_B31G = (2*t*UTS/D)*(1-(Dc/t))
