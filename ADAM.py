@@ -121,13 +121,13 @@ index = ["Pvm (MPa)", "PTresca (MPa)", "P_ASME_B31G (MPa)", "P_DnV (MPa)", "P_PC
 df = pd.DataFrame({"Burst Pressure (MPa)": Pressure}, index=index)
 
 # Principle stresses for Maximum Operating Pressure
-P1max = Pop_Max*D/(2*t)
-P2max = Pop_Max*D/(4*t)
+P1max = Pop_Max*D/(2*P)
+P2max = Pop_Max*D/(4*P)
 P3max = 0
 
 # Principle stresses for Minimum Operating Pressure
-P1min = Pop_Min*D/(2*t)
-P2min = Pop_Min*D/(4*t)
+P1min = Pop_Min*D/(2*P)
+P2min = Pop_Min*D/(4*P)
 P3min = 0
 
 # VM stress Max and Min Operating Pressure
