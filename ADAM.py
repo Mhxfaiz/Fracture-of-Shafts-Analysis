@@ -58,7 +58,7 @@ st.write('t is the pipe thickness; D is the pipe diameter; L is the pipe length 
 Pvm = 4*P*UTS/(m.sqrt(3)*D)
 
 # Calculate burst pressure of intact pipe P Tresca
-PTresca = 2*t*UTS/(D)
+PTresca = 2*P*UTS/(D)
 
 # Calculate burst pressure of corroded pipe P ASME B31G (2013)
 M = m.sqrt(1+0.8*(L/(m.sqrt(D*t)))) #Folias factor
