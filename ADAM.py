@@ -17,7 +17,7 @@ st.image(htp, caption= "Fig. 1: Schematic illustration of the geometry of a typi
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
-    pipe_thickness = st.sidebar.number_input('Pipe Thickness, t (mm)', value = 0.01)
+    power = st.sidebar.number_input('Power, P (W)', value = 0.01)
     pipe_diameter = st.sidebar.number_input('Pipe Diameter, D (mm)', value = 0.01)
     pipe_length = st.sidebar.number_input('Pipe Length, L (mm)', value = 0.01)
     corrosion_length = st.sidebar.number_input('Corrosion Length, Lc (mm)', value = 0.01)
@@ -27,7 +27,7 @@ def user_input_features():
     Maximum_Operating_Pressure = st.sidebar.slider('Maximum Operating Pressure, Pop, Max (MPa)', min_value=0, max_value=50, step=1)
     Minimum_Operating_Pressure = st.sidebar.slider('Minimum Operating Pressure, Pop, Min (MPa)', min_value=0, max_value=50, step=1)
 
-    data = {'t (mm)': pipe_thickness,
+    data = {'P (W)': power,
             'D (mm)': pipe_diameter,
             'L (mm)': pipe_length,
             'Lc (mm)': corrosion_length,
@@ -41,7 +41,7 @@ def user_input_features():
 
 df = user_input_features()
 
-t=df['t (mm)'].values.item()
+P=df['P (W)'].values.item()
 D=df['D (mm)'].values.item()
 L=df['L (mm)'].values.item()
 Lc=df['Lc (mm)'].values.item()
@@ -55,7 +55,7 @@ st.subheader('Nomenclature')
 st.write('t is the pipe thickness; D is the pipe diameter; L is the pipe length (i.e., by default = 1000 mm); Lc is the corrosion length; Dc is the corrosion depth; Sy is the pipe material yield stress; UTS is the pipe material Ultimate Tensile Strength.')
 
 # Calculate burst pressure of intact pipe P Von Mises
-Pvm = 4*t*UTS/(m.sqrt(3)*D)
+Pvm = 4*P*UTS/(m.sqrt(3)*D)
 
 # Calculate burst pressure of intact pipe P Tresca
 PTresca = 2*t*UTS/(D)
