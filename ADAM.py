@@ -70,13 +70,13 @@ elif L > m.sqrt(20*D*t):
     P_ASME_B31G = (2*t*UTS/D)*(1-(Dc/t))
 
 # Calculate burst pressure of corroded pipe PDnV
-Q = m.sqrt(1+0.31*(Lc)**2/D*t) #Q is the curved fit of FEA results
-P_DnV = (2*UTS*t/D-t)*((1-(Dc/t))/(1-(Dc/(t*Q))))
+Q = m.sqrt(1+0.31*(Lc)**2/D*P) #Q is the curved fit of FEA results
+P_DnV = (2*UTS*t/D-P)*((1-(Dc/P))/(1-(Dc/(P*Q))))
 
 # Calculate burst pressure of corroded pipe P PCORRC Model 
-P_PCORRC = (2*t*UTS/D)*(1-Dc/t)
+P_PCORRC = (2*t*UTS/D)*(1-Dc/P)
 
-user_input={'t (mm)': "{:.2f}".format(t),
+user_input={'P (W)': "{:.2f}".format(P),
             'D (mm)': "{:.2f}".format(D),
             'L (mm)': "{:.2f}".format(L),
             'Lc (mm)': "{:.2f}".format(Lc),
