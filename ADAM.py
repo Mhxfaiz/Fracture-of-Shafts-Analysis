@@ -18,8 +18,8 @@ st.sidebar.header('User Input Parameters')
 
 def user_input_features():
     power = st.sidebar.number_input('Power, P (W)', value = 0.01)
-    pipe_diameter = st.sidebar.number_input('Pipe Diameter, D (mm)', value = 0.01)
-    pipe_length = st.sidebar.number_input('Pipe Length, L (mm)', value = 0.01)
+    shaft_diameter = st.sidebar.number_input('Shaft Diameter, D (mm)', value = 0.01)
+    vickers_hardness = st.sidebar.number_input('Vickers Hardness, HV (kgf/mm^2)', value = 0.01)
     corrosion_length = st.sidebar.number_input('Corrosion Length, Lc (mm)', value = 0.01)
     corrosion_depth = st.sidebar.number_input('Corrosion Depth, Dc (mm)', value = 0.01)
     Sy = st.sidebar.number_input('Yield Stress, Sy (MPa)', value = 0.01)
