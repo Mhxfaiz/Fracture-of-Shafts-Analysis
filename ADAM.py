@@ -28,8 +28,8 @@ def user_input_features():
     Minimum_Operating_Pressure = st.sidebar.slider('Minimum Operating Pressure, Pop, Min (MPa)', min_value=0, max_value=50, step=1)
 
     data = {'P (W)': power,
-            'D (mm)': pipe_diameter,
-            'L (mm)': pipe_length,
+            'D (mm)': shaft_diameter,
+            'HV (kgf/mm^2)': vickers_hardness,
             'Lc (mm)': corrosion_length,
             'Dc (mm)': corrosion_depth,           
             'UTS (MPa)': UTS,
