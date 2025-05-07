@@ -18,9 +18,9 @@ st.sidebar.header('User Input Parameters')
 
 def user_input_features():
     power = st.sidebar.number_input('Power, P (W)', value = 0.01)
+    rotational_per_msecond = st.sidebar.number_input('Rotational Per Second, f (RPS)', value = 0.01)
     shaft_diameter = st.sidebar.number_input('Shaft Diameter, D (mm)', value = 0.01)
     vickers_hardness = st.sidebar.number_input('Vickers Hardness, HV (kgf/mm^2)', value = 0.01)
-    corrosion_length = st.sidebar.number_input('Corrosion Length, Lc (mm)', value = 0.01)
     corrosion_depth = st.sidebar.number_input('Corrosion Depth, Dc (mm)', value = 0.01)
     Sy = st.sidebar.number_input('Yield Stress, Sy (MPa)', value = 0.01)
     UTS = st.sidebar.number_input('Ultimate Tensile Strength, UTS (MPa)', value = 0.01)
@@ -28,9 +28,9 @@ def user_input_features():
     Minimum_Operating_Pressure = st.sidebar.slider('Minimum Operating Pressure, Pop, Min (MPa)', min_value=0, max_value=50, step=1)
 
     data = {'P (W)': power,
+            'f (RPS)': rotational_per_second,
             'D (mm)': shaft_diameter,
             'HV (kgf/mm^2)': vickers_hardness,
-            'Lc (mm)': corrosion_length,
             'Dc (mm)': corrosion_depth,           
             'UTS (MPa)': UTS,
             'Sy (MPa)': Sy,
