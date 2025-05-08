@@ -25,7 +25,7 @@ def user_input_features():
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
             'd (mm)': shaft_diameter,
-            'HV (kgf/mm^2)': vickers_hardness,
+            'HV (kgf/mm^2)': vickers_hardness,}
 
     features = pd.DataFrame(data, index=[0])
     return features
