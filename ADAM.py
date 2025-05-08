@@ -18,8 +18,8 @@ st.sidebar.header('User Input Parameters')
 
 def user_input_features():
     power = st.sidebar.number_input('Power, P (W)', value = 0.01)
-    rotational_per_msecond = st.sidebar.number_input('Rotational Per Second, f (RPS)', value = 0.01)
-    shaft_diameter = st.sidebar.number_input('Shaft Diameter, D (mm)', value = 0.01)
+    rotation_per_msecond = st.sidebar.number_input('Rotation Per Second, f (RPS)', value = 0.01)
+    shaft_diameter = st.sidebar.number_input('Shaft Diameter, d (mm)', value = 0.01)
     vickers_hardness = st.sidebar.number_input('Vickers Hardness, HV (kgf/mm^2)', value = 0.01)
     corrosion_depth = st.sidebar.number_input('Corrosion Depth, Dc (mm)', value = 0.01)
     Sy = st.sidebar.number_input('Yield Stress, Sy (MPa)', value = 0.01)
@@ -28,8 +28,8 @@ def user_input_features():
     Minimum_Operating_Pressure = st.sidebar.slider('Minimum Operating Pressure, Pop, Min (MPa)', min_value=0, max_value=50, step=1)
 
     data = {'P (W)': power,
-            'f (RPS)': rotational_per_second,
-            'D (mm)': shaft_diameter,
+            'f (RPS)': rotation_per_second,
+            'd (mm)': shaft_diameter,
             'HV (kgf/mm^2)': vickers_hardness,
             'Dc (mm)': corrosion_depth,           
             'UTS (MPa)': UTS,
@@ -42,9 +42,9 @@ def user_input_features():
 df = user_input_features()
 
 P=df['P (W)'].values.item()
-D=df['D (mm)'].values.item()
-L=df['L (mm)'].values.item()
-Lc=df['Lc (mm)'].values.item()
+D=df['f (RPS)'].values.item()
+L=df['d (mm)'].values.item()
+Lc=df['HV (kgf/mm^2)'].values.item()
 Dc=df['Dc (mm)'].values.item()
 UTS=df['UTS (MPa)'].values.item()
 Sy=df['Sy (MPa)'].values.item()
@@ -52,7 +52,7 @@ Pop_Max=df['Pop_Max (MPa)'].values.item()
 Pop_Min=df['Pop_Min (MPa)'].values.item()
 
 st.subheader('Nomenclature')
-st.write('t is the pipe thickness; D is the pipe diameter; L is the pipe length (i.e., by default = 1000 mm); Lc is the corrosion length; Dc is the corrosion depth; Sy is the pipe material yield stress; UTS is the pipe material Ultimate Tensile Strength.')
+st.write('P is the ppwer; f is the rotation per second; d is the pipe diameter (i.e., by default = 1000 mm); HV is Vickers Hardness; Dc is the corrosion depth; Sy is the pipe material yield stress; UTS is the pipe material Ultimate Tensile Strength.')
 
 # Calculate burst pressure of intact pipe P Von Mises
 Pvm = 4*P*UTS/(m.sqrt(3)*D)
