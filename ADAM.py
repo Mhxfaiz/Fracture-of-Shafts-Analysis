@@ -69,7 +69,7 @@ Se = (1.6*HV) + (0.1*HV)
 
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
-            'd (mm)': "{:.2f}".format(D),
+            'd (mm)': "{:.2f}".format(d),
             'HV (kgf/mm^2)': "{:.2f}".format(HV),
             'Cload': "{:.2f}".format(Cload),
             'Csize': "{:.2f}".format(Csize),
