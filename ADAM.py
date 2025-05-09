@@ -67,13 +67,6 @@ T = P/2*(22/7)*f
 # Calculate uncorrected endurance strength Se
 Se = (1.6*HV) + (0.1*HV)
 
-# Calculate burst pressure of corroded pipe PDnV
-Q = m.sqrt(1+0.31*(Lc)**2/D*P) #Q is the curved fit of FEA results
-P_DnV = (2*UTS*P/D-P)*((1-(Dc/P))/(1-(Dc/(P*Q))))
-
-# Calculate burst pressure of corroded pipe P PCORRC Model 
-P_PCORRC = (2*P*UTS/D)*(1-Dc/P)
-
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
             'd (mm)': "{:.2f}".format(D),
