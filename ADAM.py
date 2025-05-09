@@ -62,7 +62,7 @@ r=df['r (mm)'].values.item()
 ρ=df['ρ (mm)'].values.item()
 
 st.subheader('Nomenclature')
-st.write('P is the power, f is the rotation per second, d is the pipe diameter, HV is Vickers Hardness, Cload is the load factor, Csize is the size factor, Csurf is the surface factor, Ctemp is the temperature factor, creliab is the reliability factor, Kt is the stress concentration factor, r is the radius at the notch root, ρ is the characteristic length.')
+st.write('P is the power, f is the rotation per second\n d is the pipe diameter\n HV is Vickers Hardness\n Cload is the load factor\n Csize is the size factor\n Csurf is the surface factor\n Ctemp is the temperature factor\n creliab is the reliability factor\n Kt is the stress concentration factor\n r is the radius at the notch root\n ρ is the characteristic length.')
 
 # Calculate torsional loading T
 T = P/2*(22/7)*f
