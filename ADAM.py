@@ -50,7 +50,7 @@ d=df['d (mm)'].values.item()
 HV=df['HV (kgf/mm)'].values.item()
 
 st.subheader('Nomenclature')
-st.write('P is the ppwer; f is the rotation per second; d is the pipe diameter (i.e., by default = 1000 mm); HV is Vickers Hardness.')
+st.write('P is the ppwer; f is the rotation per second; d is the pipe diameter (i.e., by default = 1000 mm); HV is Vickers Hardness; Cload is the load factor; Csize is the size factor; Csurf is the surface factor; Ctemp is the temperature factor; creliab is the reliability factor; Cnotch is the notch factor.')
 
 # Calculate torsional loading T
 T = P/2*(22/7)*f
