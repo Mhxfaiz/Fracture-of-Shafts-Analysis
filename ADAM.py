@@ -26,7 +26,9 @@ def user_input_features():
     surface_factor = st.sidebar.number_input('Surface Factor, Csurf', value = 0.01)
     temperature_factor = st.sidebar.number_input('Temperature Factor, Ctemp', value = 0.01)
     reliability_factor = st.sidebar.number_input('Reliability Factor, Creliab', value = 0.01)
-    notch_factor = st.sidebar.number_input('Notch Factor, Cnotch', value = 0.01)
+    stress_concentration_factor = st.sidebar.number_input('Stress Concentration Factor, Kt', value = 0.01)
+    radius = st.sidebar.number_input('Radius at the Notch Root, r (mm)', value = 0.01)
+    characteristic_length = st.sidebar.number_input('Characteristic Length, ρ (mm)', value = 0.01)
     
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
@@ -37,7 +39,9 @@ def user_input_features():
             'Csurf' : surface_factor,
             'Ctemp' : temperature_factor,
             'Creliab' : reliability_factor,
-            'Cnotch' : notch_factor,}
+            'Kt' : stress_concentration_factor,
+            'r (mm)' : radius,
+            'ρ (mm)' : characteristic_length, }
 
     features = pd.DataFrame(data, index=[0])
     return features
@@ -53,10 +57,12 @@ Csize=df['Cload'].values.item()
 Csurf=df['Cload'].values.item()
 Ctemp=df['Cload'].values.item()
 Creliab=df['Cload'].values.item()
-Cnotch=df['Cload'].values.item()
+Kt=df['Kt'].values.item()
+r=df['r (mm)'].values.item()
+ρ=df['ρ (mm)'].values.item()
 
 st.subheader('Nomenclature')
-st.write('P is the ppwer; f is the rotation per second; d is the pipe diameter (i.e., by default = 1000 mm); HV is Vickers Hardness; Cload is the load factor; Csize is the size factor; Csurf is the surface factor; Ctemp is the temperature factor; creliab is the reliability factor; Cnotch is the notch factor.')
+st.write('P is the ppwer; f is the rotation per second; d is the pipe diameter (i.e., by default = 1000 mm); HV is Vickers Hardness; Cload is the load factor; Csize is the size factor; Csurf is the surface factor; Ctemp is the temperature factor; creliab is the reliability factor; Kt is the stress concentration factor; r is the radius at the notch root; ρ is the characteristic length.')
 
 # Calculate torsional loading T
 T = P/2*(22/7)*f
@@ -76,7 +82,10 @@ user_input={'P (W)': "{:.2f}".format(P),
             'Csurf': "{:.2f}".format(Csurf),
             'Ctemp': "{:.2f}".format(Ctemp),
             'Creliab': "{:.2f}".format(Creliab),
-            'Cnotch': "{:.2f}".format(Cnotch),}
+            'Kt': "{:.2f}".format(Kt),
+            'r (mm)': "{:.2f}".format(r)
+            'ρ (mm)': "{:.2f}".format(r)}
+
 user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
 st.write(user_input_df)
