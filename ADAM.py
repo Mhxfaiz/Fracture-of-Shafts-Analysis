@@ -21,11 +21,23 @@ def user_input_features():
     rotation_per_second = st.sidebar.number_input('Rotation Per Second, f (RPS)', value = 0.01)
     shaft_diameter = st.sidebar.number_input('Shaft Diameter, d (mm)', value = 0.01)
     vickers_hardness = st.sidebar.number_input('Vickers Hardness, HV (kgf/mm^2)', value = 0.01)
-
+    load_factor = st.sidebar.number_input('Load Factor, Cload', value = 0.01)
+    size_factor = st.sidebar.number_input('Size Factor, Csize', value = 0.01)
+    surface_factor = st.sidebar.number_input('Surface Factor, Csurf', value = 0.01)
+    temperature_factor = st.sidebar.number_input('Temperature Factor, Ctemp', value = 0.01)
+    reliability_factor = st.sidebar.number_input('Reliability Factor, Creliab', value = 0.01)
+    notch_factor = st.sidebar.number_input('Notch Factor, Cnotch', value = 0.01)
+    
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
             'd (mm)': shaft_diameter,
-            'HV (kgf/mm^2)': vickers_hardness,}
+            'HV (kgf/mm^2)': vickers_hardness,
+            'Cload' : load_factor,
+            'Csize' : size_factor,
+            'Csurf' : surf_factor,
+            'Ctemp' : temp_factor,
+            'Creliab' : reliab_factor,
+            'Cnotch' : notch_factor,}
 
     features = pd.DataFrame(data, index=[0])
     return features
@@ -38,22 +50,22 @@ d=df['d (mm)'].values.item()
 HV=df['HV (kgf/mm^2)'].values.item()
 
 st.subheader('Nomenclature')
-st.write('P is the ppwer; f is the rotation per second; d is the pipe diameter (i.e., by default = 1000 mm); HV is Vickers Hardness; Dc is the corrosion depth.')
+st.write('P is the ppwer; f is the rotation per second; d is the pipe diameter (i.e., by default = 1000 mm); HV is Vickers Hardness.')
 
 # Calculate torsional loading T
 T = P/2*(22/7)*f
 
-# Calculate shear stress
-Sshear = (16*T)/(22/7)*(d*d*d)
+# Calculate shear stress τ
+τ = (16*T)/(22/7)*(d*d*d)
 
-# Calculate burst pressure of corroded pipe P ASME B31G (2013)
-M = m.sqrt(1+0.8*(L/(m.sqrt(D*P)))) #Folias factor
+# Calculate uncorrected endurance strength S'e
+S'e = (1.6*HV) + (0.1*HV) #Folias factor
 
-if L < m.sqrt(20*D*P):
-    P_ASME_B31G = (2*P*UTS/D)*(1-(2/3)*(Dc/P)/1-(2/3)*(Dc/P)/M)
+if d < 8 (mm):
+    Csize = 1
 
-elif L > m.sqrt(20*D*t):
-    P_ASME_B31G = (2*t*UTS/D)*(1-(Dc/t))
+elif d > 8 (mm):
+    Csize = 1.189
 
 # Calculate burst pressure of corroded pipe PDnV
 Q = m.sqrt(1+0.31*(Lc)**2/D*P) #Q is the curved fit of FEA results
