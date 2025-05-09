@@ -34,9 +34,9 @@ def user_input_features():
             'HV (kgf/mm)': vickers_hardness,
             'Cload' : load_factor,
             'Csize' : size_factor,
-            'Csurf' : surf_factor,
-            'Ctemp' : temp_factor,
-            'Creliab' : reliab_factor,
+            'Csurf' : surface_factor,
+            'Ctemp' : temperature_factor,
+            'Creliab' : reliability_factor,
             'Cnotch' : notch_factor,}
 
     features = pd.DataFrame(data, index=[0])
