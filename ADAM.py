@@ -82,8 +82,8 @@ user_input={'P (W)': "{:.2f}".format(P),
             'Csize': "{:.2f}".format(Csize),
             'Csurf': "{:.2f}".format(Csurf),
             'Ctemp': "{:.2f}".format(Ctemp),
-            'Creliab': "{:.2f}".format(Creliab)
-            'Cnotch': "{:.2f}".format(Cnotch)}
+            'Creliab': "{:.2f}".format(Creliab),
+            'Cnotch': "{:.2f}".format(Cnotch),}
 user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
 st.write(user_input_df)
