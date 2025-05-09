@@ -67,12 +67,6 @@ T = P/2*(22/7)*f
 # Calculate uncorrected endurance strength Se
 Se = (1.6*HV) + (0.1*HV)
 
-if d < 8 (mm):
-    Csize = 1
-
-elif d > 8 (mm):
-    Csize = 1.189
-
 # Calculate burst pressure of corroded pipe PDnV
 Q = m.sqrt(1+0.31*(Lc)**2/D*P) #Q is the curved fit of FEA results
 P_DnV = (2*UTS*P/D-P)*((1-(Dc/P))/(1-(Dc/(P*Q))))
@@ -84,11 +78,12 @@ user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
             'd (mm)': "{:.2f}".format(D),
             'HV (kgf/mm^2)': "{:.2f}".format(HV),
-            'Dc (mm)': "{:.2f}".format(Dc),
-            'UTS (MPa)': "{:.2f}".format(UTS),
-            'Sy (MPa)': "{:.2f}".format(Sy),
-            'Pop_Max (MPa)': "{:.2f}".format(Pop_Max),
-            'Pop_Min (MPa)': "{:.2f}".format(Pop_Min)}
+            'Cload': "{:.2f}".format(Cload),
+            'Csize': "{:.2f}".format(Csize),
+            'Csurf': "{:.2f}".format(Csurf),
+            'Ctemp': "{:.2f}".format(Ctemp),
+            'Creliab': "{:.2f}".format(Creliab)
+            'Cnotch': "{:.2f}".format(Cnotch)}
 user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
 st.write(user_input_df)
