@@ -83,8 +83,8 @@ user_input={'P (W)': "{:.2f}".format(P),
             'Ctemp': "{:.2f}".format(Ctemp),
             'Creliab': "{:.2f}".format(Creliab),
             'Kt': "{:.2f}".format(Kt),
-            'r (mm)': "{:.2f}".format(r)
-            'ρ (mm)': "{:.2f}".format(r)}
+            'r (mm)': "{:.2f}".format(r),
+            'ρ (mm)': "{:.2f}".format(ρ),}
 
 user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
