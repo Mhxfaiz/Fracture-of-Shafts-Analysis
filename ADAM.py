@@ -73,6 +73,12 @@ T = P/2*(22/7)*f
 # Calculate uncorrected endurance strength Se
 Se = (1.6*HV) + (0.1*HV)
 
+# Calculate fatigue notch factor
+Kf = 1 + ((Kt-1)/(1+m.sqrt(ρ/r)))
+
+# Calculate notch correction factor
+Cnotch = 1/Kf
+
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
             'd (mm)': "{:.2f}".format(d),
