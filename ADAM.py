@@ -20,7 +20,7 @@ def user_input_features():
     power = st.sidebar.number_input('Power, P (W)', value = 0.01)
     rotation_per_second = st.sidebar.number_input('Rotation Per Second, f (RPS)', value = 0.01)
     shaft_diameter = st.sidebar.number_input('Shaft Diameter, d (mm)', value = 0.01)
-    vickers_hardness = st.sidebar.number_input('Vickers Hardness, HV (kgf/mm^2)', value = 0.01)
+    vickers_hardness = st.sidebar.number_input('Vickers Hardness, HV (kgf/mm)', value = 0.01)
     load_factor = st.sidebar.number_input('Load Factor, Cload', value = 0.01)
     size_factor = st.sidebar.number_input('Size Factor, Csize', value = 0.01)
     surface_factor = st.sidebar.number_input('Surface Factor, Csurf', value = 0.01)
@@ -31,7 +31,7 @@ def user_input_features():
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
             'd (mm)': shaft_diameter,
-            'HV (kgf/mm^2)': vickers_hardness,
+            'HV (kgf/mm)': vickers_hardness,
             'Cload' : load_factor,
             'Csize' : size_factor,
             'Csurf' : surf_factor,
@@ -47,7 +47,7 @@ df = user_input_features()
 P=df['P (W)'].values.item()
 f=df['f (RPS)'].values.item()
 d=df['d (mm)'].values.item()
-HV=df['HV (kgf/mm^2)'].values.item()
+HV=df['HV (kgf/mm)'].values.item()
 
 st.subheader('Nomenclature')
 st.write('P is the ppwer; f is the rotation per second; d is the pipe diameter (i.e., by default = 1000 mm); HV is Vickers Hardness.')
