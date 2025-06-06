@@ -29,6 +29,8 @@ def user_input_features():
     stress_concentration_factor = st.sidebar.number_input('Stress Concentration Factor, Kt', value = 0.01)
     radius = st.sidebar.number_input('Radius at the Notch Root, r (mm)', value = 0.01)
     characteristic_length = st.sidebar.number_input('Characteristic Length, ρ (mm)', value = 0.01)
+    minimum_stress = st.sidebar.number_input('Minimum Stress, Smin (MPa)', value = 0.01)
+    maximum_stress = st.sidebar.number_input('Maximum Stress, Smax (MPa)', value = 0.01)
     
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
@@ -41,7 +43,9 @@ def user_input_features():
             'Creliab' : reliability_factor,
             'Kt' : stress_concentration_factor,
             'r (mm)' : radius,
-            'ρ (mm)' : characteristic_length, }
+            'ρ (mm)' : characteristic_length,
+            'Smin (MPa)' : minimum_stress,
+            'Smax (MPa)' : maximum_stress, }
 
     features = pd.DataFrame(data, index=[0])
     return features
@@ -60,6 +64,8 @@ Creliab=df['Creliab'].values.item()
 Kt=df['Kt'].values.item()
 r=df['r (mm)'].values.item()
 ρ=df['ρ (mm)'].values.item()
+Smin=df['ρ (MPa)'].values.item()
+Smax=df['ρ (MPa)'].values.item()
 
 st.subheader('Nomenclature')
 st.write('P is the power, f is the rotation per second, d is the pipe diameter, HV is Vickers Hardness, Cload is the load factor, Csize is the size factor, Csurf is the surface factor, Ctemp is the temperature factor, creliab is the reliability factor, Kt is the stress concentration factor, r is the radius at the notch root, ρ is the characteristic length.')
@@ -79,6 +85,12 @@ Kf = 1 + ((Kt-1)/(1+m.sqrt(ρ/r)))
 # Calculate notch correction factor
 Cnotch = 1/Kf
 
+# Calculate alternating stress
+Smean = ((Smax - Smin)/2)
+
+# Calculate mean stress
+Smean = ((Smax + Smin)/2)
+
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
             'd (mm)': "{:.2f}".format(d),
@@ -90,7 +102,9 @@ user_input={'P (W)': "{:.2f}".format(P),
             'Creliab': "{:.2f}".format(Creliab),
             'Kt': "{:.2f}".format(Kt),
             'r (mm)': "{:.2f}".format(r),
-            'ρ (mm)': "{:.2f}".format(ρ),}
+            'ρ (mm)': "{:.2f}".format(ρ),
+            'Smin (MPa)' : "{:.2f}".format (Smin)
+            'Smax (MPa)' : "{:.2f}".format (Smax)
 
 user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
