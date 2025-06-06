@@ -103,8 +103,8 @@ user_input={'P (W)': "{:.2f}".format(P),
             'Kt': "{:.2f}".format(Kt),
             'r (mm)': "{:.2f}".format(r),
             'ρ (mm)': "{:.2f}".format(ρ),
-            'Smin (MPa)' : "{:.2f}".format (Smin)
-            'Smax (MPa)' : "{:.2f}".format (Smax)
+            'Smin (MPa)' : "{:.2f}".format (Smin),
+            'Smax (MPa)' : "{:.2f}".format (Smax), }
 
 user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
