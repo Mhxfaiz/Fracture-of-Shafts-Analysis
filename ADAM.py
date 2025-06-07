@@ -143,8 +143,9 @@ calculated_notch_factor_correction_df=pd.DataFrame(calculated_notch_factor_corre
 st.subheader('Calculated Notch Factor Correction')
 st.write(calculated_notch_factor_correction_df)
 
-calculated_corrected_endurance_factor={'Se (MPa)': "{:.2f}".format(Se)}
-calculated_corrected_endurance_factor_df=pd.DataFrame(calculated_ncorrected_endurance_factor, index=[0])
+# Corrected Endurance Factor
+calculated_corrected_endurance_factor={'Se (MPa)' : "{:.2f}".format(Se)}
+calculated_corrected_endurance_factor_df=pd.DataFrame(calculated_corrected_endurance_factor, index=[0])
 st.subheader('Calculated Corrected Endurance Factor')
 st.write(calculated_corrected_endurance_factor_df)
 
