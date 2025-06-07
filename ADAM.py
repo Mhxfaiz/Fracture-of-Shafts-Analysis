@@ -131,7 +131,7 @@ calculated_uncorrected_endurance_strength_df=pd.DataFrame(calculated_uncorrected
 st.subheader('Calculated Uncorrected Endurance Strength')
 st.write(calculated_uncorrected_endurance_strength_df)
 
-# Calculated Fatigue Notch Factor
+# Fatigue Notch Factor
 calculated_fatigue_notch_factor={'Kf': "{:.2f}".format(Kf)}
 calculated_fatigue_notch_factor_df=pd.DataFrame(calculated_fatigue_notch_factor, index=[0])
 st.subheader('Calculated Fatigue Notch Factor')
@@ -142,6 +142,12 @@ calculated_notch_factor_correction={'Cnotch': "{:.2f}".format(Cnotch)}
 calculated_notch_factor_correction_df=pd.DataFrame(calculated_notch_factor_correction, index=[0])
 st.subheader('Calculated Notch Factor Correction')
 st.write(calculated_notch_factor_correction_df)
+
+# Corrected Endurance Factor
+calculated_corrected_endurance_factor={'Se (MPa)': "{:.2f}".format(Se)}
+calculated_corrected_endurance_factor_df=pd.DataFrame(calculated_ncorrected_endurance_factor, index=[0])
+st.subheader('Calculated Corrected Endurance Factor')
+st.write(calculated_corrected_endurance_factor_df)
 
 Pressure = [Pvm, PTresca, P_ASME_B31G, P_DnV, P_PCORRC]
 index = ["Pvm (MPa)", "PTresca (MPa)", "P_ASME_B31G (MPa)", "P_DnV (MPa)", "P_PCORRC (MPa)"]
