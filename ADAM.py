@@ -74,7 +74,7 @@ st.write('P is the power, f is the rotation per second, d is the pipe diameter, 
 T = P/(2*(22/7)*f)
 
 # Calculate shear stress τ
-τ = (16*T)/((22/7)*(math.pow(d, 3))
+τ = (16*T)/((22/7)*(math.pow(d, 3)))
 
 # Calculate uncorrected endurance strength Se
 Se = (1.6*HV) + (0.1*HV)
