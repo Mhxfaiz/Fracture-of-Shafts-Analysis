@@ -71,7 +71,7 @@ st.subheader('Nomenclature')
 st.write('P is the power, f is the rotation per second, d is the pipe diameter, HV is Vickers Hardness, Cload is the load factor, Csize is the size factor, Csurf is the surface factor, Ctemp is the temperature factor, creliab is the reliability factor, Kt is the stress concentration factor, r is the radius at the notch root, ρ is the characteristic length.')
 
 # Calculate torsional loading T
-T = P/2*(22/7)*f
+T = P/(2*(22/7)*f)
 
 # Calculate shear stress τ
 τ = (16*T)/((22/7)*(d*d*d))
