@@ -111,10 +111,10 @@ st.subheader('User Input Parameters')
 st.write(user_input_df)
 
 # Intact Pipe
-calculated_param={'Pvm (MPa)': "{:.2f}".format(Pvm)}
-calculated_param_df=pd.DataFrame(calculated_param, index=[0])
-st.subheader('Calculated Intact Pipe Burst Pressure via Von Mises')
-st.write(calculated_param_df)
+calculated_tor={'T (Nm)': "{:.2f}".format(T)}
+calculated_tor_df=pd.DataFrame(calculated_tor, index=[0])
+st.subheader('Calculated Torsional Loading')
+st.write(calculated_tor_df)
 
 calculated_param={'PTresca (MPa)': "{:.2f}".format(PTresca)}
 calculated_param_df=pd.DataFrame(calculated_param, index=[0])
