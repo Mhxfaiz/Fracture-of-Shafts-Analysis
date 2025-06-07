@@ -76,14 +76,17 @@ T = P/(2*(22/7)*f)
 # Calculate shear stress τ
 τ = (16*T)/((22/7)*(d*d*d))
 
-# Calculate uncorrected endurance strength Se
-Se = (1.6*HV) + (0.1*HV)
+# Calculate uncorrected endurance strength Sue
+Sue = (1.6*HV) + (0.1*HV)
 
 # Calculate fatigue notch factor
 Kf = 1 + ((Kt-1)/(1+m.sqrt(ρ/r)))
 
 # Calculate notch correction factor
 Cnotch = 1/Kf
+
+# Calculate corrected endurance factor Se
+Se = Cload*Csize*Csurf*Ctemp*Creliab*Cnotch*Sue
 
 # Calculate alternating stress
 Smean = ((Smax - Smin)/2)
@@ -123,20 +126,22 @@ st.subheader('Calculated Shear Stress')
 st.write(calculated_shear_stress_df)
 
 # Uncorrected Endurance Strength
-calculated_uncorrected_endurance_strength={'Se (MPa)': "{:.2f}".format(Se)}
+calculated_uncorrected_endurance_strength={'Sue (MPa)': "{:.2f}".format(Sue)}
 calculated_uncorrected_endurance_strength_df=pd.DataFrame(calculated_uncorrected_endurance_strength, index=[0])
 st.subheader('Calculated Uncorrected Endurance Strength')
 st.write(calculated_uncorrected_endurance_strength_df)
 
-calculated_param={'P_DnV (MPa)': "{:.2f}".format(P_DnV)}
-calculated_param_df=pd.DataFrame(calculated_param, index=[0])
-st.subheader('Calculated Corrorded Pipe Burst Pressure via DnV')
-st.write(calculated_param_df)
+# Calculated Fatigue Notch Factor
+calculated_fatigue_notch_factor={'Kf': "{:.2f}".format(Kf)}
+calculated_fatigue_notch_factor_df=pd.DataFrame(calculated_fatigue_notch_factor, index=[0])
+st.subheader('Calculated Fatigue Notch Factor')
+st.write(calculated_fatigue_notch_factor_df)
 
-calculated_param={'P_PCORRC (MPa)': "{:.2f}".format(P_PCORRC)}
-calculated_param_df=pd.DataFrame(calculated_param, index=[0])
-st.subheader('Calculated Corrorded Pipe Burst Pressure via PCORRC')
-st.write(calculated_param_df)
+# Notch Factor Correction
+calculated_notch_factor_correction={'Cnotch': "{:.2f}".format(Cnotch)}
+calculated_notch_factor_correction_df=pd.DataFrame(calculated_notch_factor_correction, index=[0])
+st.subheader('Calculated Notch Factor Correction')
+st.write(calculated_notch_factor_correction_df)
 
 Pressure = [Pvm, PTresca, P_ASME_B31G, P_DnV, P_PCORRC]
 index = ["Pvm (MPa)", "PTresca (MPa)", "P_ASME_B31G (MPa)", "P_DnV (MPa)", "P_PCORRC (MPa)"]
