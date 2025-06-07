@@ -110,22 +110,23 @@ user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
 st.write(user_input_df)
 
-# Intact Pipe
+# Torsional Loading
 calculated_torsional_loading={'T (Nm)': "{:.2f}".format(T)}
 calculated_torsional_loading_df=pd.DataFrame(calculated_torsional_loading, index=[0])
 st.subheader('Calculated Torsional Loading')
 st.write(calculated_torsional_loading_df)
 
-calculated_param={'PTresca (MPa)': "{:.2f}".format(PTresca)}
-calculated_param_df=pd.DataFrame(calculated_param, index=[0])
-st.subheader('Calculated Intact Pipe Burst Pressure via Tresca')
-st.write(calculated_param_df)
+# Shear Stress
+calculated_shear_stress={'τ (Pa)': "{:.2f}".format(τ)}
+calculated_shear_stress_df=pd.DataFrame(calculated_shear_stress, index=[0])
+st.subheader('Calculated Shear Stress')
+st.write(calculated_shear_stress_df)
 
-# Corroded Pipe
-calculated_param={'P_ASME_B31G (MPa)': "{:.2f}".format(P_ASME_B31G)}
-calculated_param_df=pd.DataFrame(calculated_param, index=[0])
-st.subheader('Calculated Corroded Pipe Burst Pressure via ASME_B31G')
-st.write(calculated_param_df)
+# Uncorrected Endurance Strength
+calculated_uncorrected_endurance_strength={'Se (MPa)': "{:.2f}".format(Se)}
+calculated_uncorrected_endurance_strength_df=pd.DataFrame(calculated_uncorrected_endurance_strength, index=[0])
+st.subheader('Calculated Uncorrected Endurance Strength')
+st.write(calculated_uncorrected_endurance_strength_df)
 
 calculated_param={'P_DnV (MPa)': "{:.2f}".format(P_DnV)}
 calculated_param_df=pd.DataFrame(calculated_param, index=[0])
