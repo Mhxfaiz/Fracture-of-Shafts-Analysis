@@ -111,10 +111,10 @@ st.subheader('User Input Parameters')
 st.write(user_input_df)
 
 # Intact Pipe
-calculated_tor={'T (Nm)': "{:.2f}".format(T)}
-calculated_tor_df=pd.DataFrame(calculated_tor, index=[0])
+calculated_torsional_loading={'T (Nm)': "{:.2f}".format(T)}
+calculated_torsional_loading_df=pd.DataFrame(calculated_torsional_loading, index=[0])
 st.subheader('Calculated Torsional Loading')
-st.write(calculated_tor_df)
+st.write(calculated_torsional_loading_df)
 
 calculated_param={'PTresca (MPa)': "{:.2f}".format(PTresca)}
 calculated_param_df=pd.DataFrame(calculated_param, index=[0])
