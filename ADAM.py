@@ -31,6 +31,7 @@ def user_input_features():
     characteristic_length = st.sidebar.number_input('Characteristic Length, ρ (mm)', value = 0.01)
     minimum_stress = st.sidebar.number_input('Minimum Stress, Smin (MPa)', value = 0.01)
     maximum_stress = st.sidebar.number_input('Maximum Stress, Smax (MPa)', value = 0.01)
+    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Sult (MPa)', value = 0.01)
     
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
@@ -45,7 +46,8 @@ def user_input_features():
             'r (mm)' : radius,
             'ρ (mm)' : characteristic_length,
             'Smin (MPa)' : minimum_stress,
-            'Smax (MPa)' : maximum_stress, }
+            'Smax (MPa)' : maximum_stress, 
+            'Sult (MPa)' : ultimate_stress, }
 
     features = pd.DataFrame(data, index=[0])
     return features
@@ -66,6 +68,7 @@ r=df['r (mm)'].values.item()
 ρ=df['ρ (mm)'].values.item()
 Smin=df['Smin (MPa)'].values.item()
 Smax=df['Smax (MPa)'].values.item()
+Sult=df['Sult (MPa)'].value.item()
 
 # Calculate torsional loading T
 T = P/(2*(22/7)*f)
@@ -86,10 +89,13 @@ Cnotch = 1/Kf
 Se = Cload*Csize*Csurf*Ctemp*Creliab*Cnotch*Sue
 
 # Calculate alternating stress
-Smean = ((Smax - Smin)/2)
+Sa = ((Smax - Smin)/2)
 
 # Calculate mean stress
 Smean = ((Smax + Smin)/2)
+
+#Calculate fatigue stress
+Sf = ((Sa*Sult)/(Sult-Smean))
 
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
@@ -104,7 +110,8 @@ user_input={'P (W)': "{:.2f}".format(P),
             'r (mm)': "{:.2f}".format(r),
             'ρ (mm)': "{:.2f}".format(ρ),
             'Smin (MPa)' : "{:.2f}".format (Smin),
-            'Smax (MPa)' : "{:.2f}".format (Smax), }
+            'Smax (MPa)' : "{:.2f}".format (Smax), 
+            'Sult (MPa)' : "{:.2f}".format (Sult), }
 
 user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
@@ -145,6 +152,19 @@ calculated_corrected_endurance_factor={'Se (MPa)' : "{:.2f}".format(Se)}
 calculated_corrected_endurance_factor_df=pd.DataFrame(calculated_corrected_endurance_factor, index=[0])
 st.subheader('Calculated Corrected Endurance Factor')
 st.write(calculated_corrected_endurance_factor_df)
+
+# Alternating Stress
+calculated_alternating_stress={'Sa (MPa)' : "{:.2f}".format(Sa)}
+calculated_alternating_stress_df=pd.DataFrame(calculated_alternating_stress, index=[0])
+st.subheader('Calculated Alternating Stress')
+st.write(calculated_alternating_stress_df)
+
+# Mean Stress
+
+
+# Fatigue Stress
+
+
 
 Pressure = [Pvm, PTresca, P_ASME_B31G, P_DnV, P_PCORRC]
 index = ["Pvm (MPa)", "PTresca (MPa)", "P_ASME_B31G (MPa)", "P_DnV (MPa)", "P_PCORRC (MPa)"]
