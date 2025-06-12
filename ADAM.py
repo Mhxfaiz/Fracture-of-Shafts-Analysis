@@ -169,7 +169,7 @@ st.write(calculated_mean_stress_df)
 calculated_fatigue_stress={'Sf (MPa)' :  "{:.2f}".format(Sf)}
 calculated_fatigue_stress_df=pd.DataFrame(calculated_fatigue_stress, index=[0])
 st.subheader('Calculated Fatigue Stress')
-st.write(calcualted_fatigue_stress_df)
+st.write(calculated_fatigue_stress_df)
 
 
 Pressure = [Pvm, PTresca, P_ASME_B31G, P_DnV, P_PCORRC]
