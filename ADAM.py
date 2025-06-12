@@ -70,6 +70,10 @@ Smin=df['Smin (MPa)'].values.item()
 Smax=df['Smax (MPa)'].values.item()
 Su=df['Su (MPa)'].values.item()
 
+st.subheader('Notes')
+st.write('If shaft diameter,d < 9mm, Csize = 1.00')
+st.write('Else if shaft diameter,d > 8mm and < 251mm, Csize = 1.189(d^-0.097)')
+
 # Calculate torsional loading T
 T = P/(2*(22/7)*f)
 
