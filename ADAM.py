@@ -73,7 +73,7 @@ Su=df['Su (MPa)'].values.item()
 if d <= 8.00:
     Csize = 1
 
-else if d > 8.00 and d <= 250.00:
+elif d > 8.00 and d <= 250.00:
     Csize = 1.189*(pow(d, -0.097))
 
 # Calculate torsional loading T
