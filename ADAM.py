@@ -72,7 +72,7 @@ Su=df['Su (MPa)'].values.item()
 
 st.subheader('Notes')
 st.write('If shaft diameter,d ≤ 8mm, Csize = 1.00')
-st.write('Else if shaft diameter,d > 8mm and ≤ 250mm, Csize = 1.189(pow(d, -0.097)')
+st.write('Else if shaft diameter,d > 8mm and ≤ 250mm, Csize = 1.189(pow(d, -0.097))')
 
 # Calculate torsional loading T
 T = P/(2*(22/7)*f)
