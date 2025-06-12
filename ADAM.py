@@ -68,7 +68,7 @@ r=df['r (mm)'].values.item()
 ρ=df['ρ (mm)'].values.item()
 Smin=df['Smin (MPa)'].values.item()
 Smax=df['Smax (MPa)'].values.item()
-Sult=df['Sult (MPa)'].value.item()
+Sult=df['Sult (MPa)'].values.item()
 
 # Calculate torsional loading T
 T = P/(2*(22/7)*f)
