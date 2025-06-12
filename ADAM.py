@@ -70,12 +70,6 @@ Smin=df['Smin (MPa)'].values.item()
 Smax=df['Smax (MPa)'].values.item()
 Su=df['Su (MPa)'].values.item()
 
-if d <= 8.00:
-    Csize = 1
-
-elif d > 8.00 and d <= 250.00:
-    Csize = 1.189*(pow(d, -0.097))
-
 # Calculate torsional loading T
 T = P/(2*(22/7)*f)
 
@@ -101,7 +95,7 @@ Sa = ((Smax - Smin)/2)
 Smean = ((Smax + Smin)/2)
 
 #Calculate fatigue stress
-Sf = (Sa*Su/Su-Smean)
+Sf = (Sa*Su/(Su-Smean))
 
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
