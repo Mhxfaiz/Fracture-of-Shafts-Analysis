@@ -17,9 +17,9 @@ st.image(htp, caption= "Fig. 1: Schematic illustration of the geometry of a typi
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
-    power = st.sidebar.number_input('Power, P (W)', value = 0.01)
-    rotation_per_second = st.sidebar.number_input('Rotation Per Second, f (RPS)', value = 0.01)
-    shaft_diameter = st.sidebar.number_input('Shaft Diameter, d (mm)', value = 0.01)
+    power = st.sidebar.number_input('Power, P (W)', value = 0.00)
+    rotation_per_second = st.sidebar.number_input('Rotation Per Second, f (RPS)', value = 0.00)
+    shaft_diameter = st.sidebar.number_input('Shaft Diameter, d (mm)', value = 0.00)
     vickers_hardness = st.sidebar.number_input('Vickers Hardness, HV (kgf/mm)', value = 0.01)
     load_factor = st.sidebar.number_input('Load Factor, Cload', value = 0.01)
     size_factor = st.sidebar.number_input('Size Factor, Csize', value = 0.01)
