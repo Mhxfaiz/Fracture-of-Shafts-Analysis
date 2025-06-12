@@ -111,7 +111,7 @@ user_input={'P (W)': "{:.2f}".format(P),
             'ρ (mm)': "{:.2f}".format(ρ),
             'Smin (MPa)' : "{:.2f}".format (Smin),
             'Smax (MPa)' : "{:.2f}".format (Smax), 
-            'S (MPa)' : "{:.2f}".format (S), }
+            'Su (MPa)' : "{:.2f}".format (Su), }
 
 user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
