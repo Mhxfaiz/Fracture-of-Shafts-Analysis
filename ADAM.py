@@ -168,7 +168,7 @@ st.write(calculated_mean_stress_df)
 # Fatigue Stress
 calculated_fatigue_stress={'Sf (MPa)' :  "{:.2f}".format(Sf)}
 calculated_fatigue_stress_df=pd.DataFrame(calculated_fatigue_stress, index=[0])
-st.subheader('Calculated Fatigue Stress)
+st.subheader('Calculated Fatigue Stress')
 st.write(calcualted_fatigue_stress_df)
 
 
