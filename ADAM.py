@@ -31,7 +31,7 @@ def user_input_features():
     characteristic_length = st.sidebar.number_input('Characteristic Length, ρ (mm)', value = 0.01)
     minimum_stress = st.sidebar.number_input('Minimum Stress, Smin (MPa)', value = 0.01)
     maximum_stress = st.sidebar.number_input('Maximum Stress, Smax (MPa)', value = 0.01)
-    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Sult (MPa)', value = 0.01)
+    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Su (MPa)', value = 0.01)
     
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
@@ -47,7 +47,7 @@ def user_input_features():
             'ρ (mm)' : characteristic_length,
             'Smin (MPa)' : minimum_stress,
             'Smax (MPa)' : maximum_stress, 
-            'Sult (MPa)' : ultimate_stress, }
+            'Su (MPa)' : ultimate_stress, }
 
     features = pd.DataFrame(data, index=[0])
     return features
@@ -68,7 +68,7 @@ r=df['r (mm)'].values.item()
 ρ=df['ρ (mm)'].values.item()
 Smin=df['Smin (MPa)'].values.item()
 Smax=df['Smax (MPa)'].values.item()
-Sult=df['Sult (MPa)'].values.item()
+Su=df['Su (MPa)'].values.item()
 
 # Calculate torsional loading T
 T = P/(2*(22/7)*f)
@@ -95,7 +95,7 @@ Sa = ((Smax - Smin)/2)
 Smean = ((Smax + Smin)/2)
 
 #Calculate fatigue stress
-Sf = ((Sa*Sult)/(Sult-Smean))
+Sf = ((Sa*Su)/(Su-Smean))
 
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
@@ -111,7 +111,7 @@ user_input={'P (W)': "{:.2f}".format(P),
             'ρ (mm)': "{:.2f}".format(ρ),
             'Smin (MPa)' : "{:.2f}".format (Smin),
             'Smax (MPa)' : "{:.2f}".format (Smax), 
-            'Sult (MPa)' : "{:.2f}".format (Sult), }
+            'S (MPa)' : "{:.2f}".format (S), }
 
 user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
