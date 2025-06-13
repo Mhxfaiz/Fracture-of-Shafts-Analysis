@@ -243,112 +243,134 @@ def main():
 if __name__ == "__main__":
     main()
     
-
 def display_results():
-    # Create a container for better organization
+    # Apply some custom styling
+    st.markdown("""
+    <style>
+        .metric-container {
+            background-color: #f0f2f6;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .metric-label {
+            font-size: 14px !important;
+            color: #555555 !important;
+            font-weight: 400 !important;
+        }
+        .metric-value {
+            font-size: 20px !important;
+            color: #0068c9 !important;
+        }
+        .header {
+            color: #0068c9;
+            border-bottom: 2px solid #0068c9;
+            padding-bottom: 5px;
+        }
+        .stDataFrame {
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Main container with title
     with st.container():
-        st.header("Torsional Loading Analysis Results")
+        st.markdown("<h1 class='header'>Torsional Loading Analysis Results</h1>", unsafe_allow_html=True)
         
-        # Divide results into logical sections with columns
+        # Key metrics in two columns
         col1, col2 = st.columns(2)
         
         with col1:
-            # Loading and Stress Section
-            st.subheader("Loading & Stresses")
+            st.markdown("<h3 class='header'>Loading & Stresses</h3>", unsafe_allow_html=True)
             
-            # Torsional Loading
-            st.metric(label="Torsional Loading (T)", 
-                     value=f"{T:.2f} Nm",
-                     help="Calculated torsional moment")
+            metric_cols = st.columns(2)
+            with metric_cols[0]:
+                st.metric(label="Torsional Loading", 
+                         value=f"{T:.2f} Nm",
+                         help="Calculated torsional moment")
+                st.metric(label="Alternating Stress", 
+                         value=f"{Sa:.2f} MPa",
+                         help="Calculated alternating stress")
+            with metric_cols[1]:
+                st.metric(label="Shear Stress", 
+                         value=f"{τ/1e6:.2f} MPa",  # Convert Pa to MPa
+                         help="Calculated shear stress")
+                st.metric(label="Mean Stress", 
+                         value=f"{Smean:.2f} MPa",
+                         help="Calculated mean stress")
             
-            # Shear Stress
-            st.metric(label="Shear Stress (τ)", 
-                     value=f"{τ:.2f} Pa",
-                     help="Calculated shear stress")
-            
-            # Alternating Stress
-            st.metric(label="Alternating Stress (Sa)", 
-                     value=f"{Sa:.2f} MPa",
-                     help="Calculated alternating stress")
-            
-            # Mean Stress
-            st.metric(label="Mean Stress (Smean)", 
-                     value=f"{Smean:.2f} MPa",
-                     help="Calculated mean stress")
-            
-            # Fatigue Stress
-            st.metric(label="Fatigue Stress (Sf)", 
+            st.metric(label="Fatigue Stress", 
                      value=f"{Sf:.2f} MPa",
-                     help="Calculated fatigue stress")
+                     help="Calculated fatigue stress",
+                     delta_color="off")
         
         with col2:
-            # Material Properties Section
-            st.subheader("Material Properties")
+            st.markdown("<h3 class='header'>Material Properties</h3>", unsafe_allow_html=True)
             
-            # Uncorrected Endurance Strength
-            st.metric(label="Uncorrected Endurance Strength (Sue)", 
-                     value=f"{Sue:.2f} MPa",
-                     help="Material's uncorrected endurance limit")
-            
-            # Corrected Endurance Factor
-            st.metric(label="Corrected Endurance Factor (Se)", 
-                     value=f"{Se:.2f} MPa",
-                     help="Corrected endurance strength")
-            
-            # Fatigue Notch Factor
-            st.metric(label="Fatigue Notch Factor (Kf)", 
-                     value=f"{Kf:.2f}",
-                     help="Stress concentration factor for fatigue")
-            
-            # Notch Factor Correction
-            st.metric(label="Notch Factor Correction (Cnotch)", 
-                     value=f"{Cnotch:.2f}",
-                     help="Correction factor for notches")
+            metric_cols = st.columns(2)
+            with metric_cols[0]:
+                st.metric(label="Uncorrected Endurance", 
+                         value=f"{Sue:.2f} MPa",
+                         help="Material's uncorrected endurance limit")
+                st.metric(label="Fatigue Notch Factor", 
+                         value=f"{Kf:.2f}",
+                         help="Stress concentration factor")
+            with metric_cols[1]:
+                st.metric(label="Corrected Endurance", 
+                         value=f"{Se:.2f} MPa",
+                         help="Corrected endurance strength")
+                st.metric(label="Notch Correction", 
+                         value=f"{Cnotch:.2f}",
+                         help="Correction factor for notches")
         
-        # Add a divider
         st.divider()
         
-        # Detailed Data Section (expandable)
-        with st.expander("View Detailed Data Tables"):
-            st.subheader("Detailed Results")
+        # Detailed results in expandable section
+        with st.expander("📊 Detailed Results Table", expanded=True):
+            # Create a comprehensive results table
+            results_data = {
+                "Category": ["Loading", "Loading", "Loading", "Loading", "Loading",
+                            "Material", "Material", "Material", "Material"],
+                "Parameter": ["Torsional Loading", "Shear Stress", "Alternating Stress", 
+                              "Mean Stress", "Fatigue Stress",
+                              "Uncorrected Endurance", "Corrected Endurance",
+                              "Fatigue Notch Factor", "Notch Correction"],
+                "Symbol": ["T", "τ", "Sa", "Smean", "Sf",
+                          "Sue", "Se", "Kf", "Cnotch"],
+                "Value": [f"{T:.2f}", f"{τ/1e6:.2f}", f"{Sa:.2f}", f"{Smean:.2f}", f"{Sf:.2f}",
+                         f"{Sue:.2f}", f"{Se:.2f}", f"{Kf:.2f}", f"{Cnotch:.2f}"],
+                "Units": ["Nm", "MPa", "MPa", "MPa", "MPa",
+                         "MPa", "MPa", "", ""]
+            }
             
-            # Create tabs for different result categories
-            tab1, tab2, tab3 = st.tabs(["Loading & Stresses", "Material Properties", "All Results"])
+            # Apply conditional formatting
+            def color_metric(val):
+                color = '#0068c9' if isinstance(val, str) and any(x in val for x in ['MPa', 'Nm']) else 'inherit'
+                return f'color: {color}; font-weight: bold'
             
-            with tab1:
-                st.write("**Loading and Stress Values**")
-                loading_data = {
-                    "Parameter": ["Torsional Loading (Nm)", "Shear Stress (Pa)", 
-                                "Alternating Stress (MPa)", "Mean Stress (MPa)", 
-                                "Fatigue Stress (MPa)"],
-                    "Value": [T, τ, Sa, Smean, Sf]
-                }
-                st.dataframe(pd.DataFrame(loading_data), hide_index=True)
+            st.dataframe(
+                pd.DataFrame(results_data).style
+                .applymap(color_metric)
+                .set_properties(**{'text-align': 'left'})
+                .set_table_styles([{
+                    'selector': 'th',
+                    'props': [('background-color', '#0068c9'), ('color', 'white')]
+                }]),
+                use_container_width=True
+            )
             
-            with tab2:
-                st.write("**Material Property Values**")
-                material_data = {
-                    "Parameter": ["Uncorrected Endurance Strength (MPa)", 
-                                "Corrected Endurance Factor (MPa)",
-                                "Fatigue Notch Factor", 
-                                "Notch Factor Correction"],
-                    "Value": [Sue, Se, Kf, Cnotch]
-                }
-                st.dataframe(pd.DataFrame(material_data), hide_index=True)
-            
-            with tab3:
-                st.write("**Complete Results**")
-                complete_data = {
-                    "Parameter": ["Torsional Loading", "Shear Stress", 
-                                 "Uncorrected Endurance Strength", "Fatigue Notch Factor",
-                                 "Notch Factor Correction", "Corrected Endurance Factor",
-                                 "Alternating Stress", "Mean Stress", "Fatigue Stress"],
-                    "Symbol": ["T", "τ", "Sue", "Kf", "Cnotch", "Se", "Sa", "Smean", "Sf"],
-                    "Value": [T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf],
-                    "Units": ["Nm", "Pa", "MPa", "", "", "MPa", "MPa", "MPa", "MPa"]
-                }
-                st.dataframe(pd.DataFrame(complete_data), hide_index=True)
+            # Add download button
+            csv = pd.DataFrame(results_data).to_csv(index=False)
+            st.download_button(
+                label="📥 Download Full Results",
+                data=csv,
+                file_name='torsional_analysis_results.csv',
+                mime='text/csv'
+            )
 
+# Call the function to display results
 display_results()
 
 st.subheader('Reference')
