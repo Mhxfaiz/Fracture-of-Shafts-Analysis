@@ -31,7 +31,7 @@ def user_input_features():
     characteristic_length = st.sidebar.number_input('Characteristic Length, ρ (mm)', value = 0.01)
     minimum_stress = st.sidebar.number_input('Minimum Stress, Smin (MPa)', value = 0.00)
     maximum_stress = st.sidebar.number_input('Maximum Stress, Smax (MPa)', value = 0.00)
-    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Su (MPa)', value = 0.00)
+    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Su (MPa)', value = 0.01)
     
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
