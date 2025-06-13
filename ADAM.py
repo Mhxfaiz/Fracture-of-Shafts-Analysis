@@ -134,7 +134,7 @@ st.subheader('Calculated Shear Stress')
 st.write(calculated_shear_stress_df)
 
 # Uncorrected Endurance Strength
-calculated_uncorrected_endurance_strength={'Sue (MPa)': "{:.2f}".format(Sue)}
+calculated_uncorrected_endurance_strength={'Se' (MPa)': "{:.2f}".format(Se')}
 calculated_uncorrected_endurance_strength_df=pd.DataFrame(calculated_uncorrected_endurance_strength, index=[0])
 st.subheader('Calculated Uncorrected Endurance Strength')
 st.write(calculated_uncorrected_endurance_strength_df)
