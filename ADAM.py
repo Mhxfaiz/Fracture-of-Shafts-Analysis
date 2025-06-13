@@ -243,39 +243,29 @@ def main():
 if __name__ == "__main__":
     main()
 
-import streamlit as st
-import pandas as pd
-import math
-
-def calculate_parameters():
-    """Calculate all required engineering parameters"""
-    # Example calculations (replace with your actual formulas)
-    T = 1000 / (2 * math.pi * 10)  # Torsional loading (Nm)
-    τ = (16 * T) / (math.pi * (0.02**3))  # Shear stress (Pa)
-    Sue = 1.7 * 200  # Uncorrected endurance strength (MPa)
+def main():
+    # ========== CALCULATIONS (Replace with your actual formulas) ==========
+    # Example calculations (these would be replaced with your real formulas)
+    P = 1000  # Power in Watts (example value)
+    f = 10    # Rotation per second (example value)
+    d = 0.02  # Shaft diameter in meters (example value)
+    HV = 200  # Vickers hardness (example value)
+    Smin = 50 # Minimum stress in MPa (example value)
+    Smax = 150 # Maximum stress in MPa (example value)
+    Su = 400  # Ultimate stress in MPa (example value)
+    
+    # Calculate all parameters
+    T = P / (2 * math.pi * f)  # Torsional loading (Nm)
+    τ = (16 * T) / (math.pi * (d**3))  # Shear stress (Pa)
+    Sue = 1.7 * HV  # Uncorrected endurance strength (MPa)
     Kf = 1 + (1.5 - 1) / (1 + math.sqrt(0.1 / 2))  # Fatigue notch factor
     Cnotch = 1 / Kf  # Notch correction
     Se = 0.9 * 0.85 * 0.8 * 1.0 * 0.9 * Cnotch * Sue  # Corrected endurance (MPa)
-    Sa = (150 - 50) / 2  # Alternating stress (MPa)
-    Smean = (150 + 50) / 2  # Mean stress (MPa)
-    Sf = (Sa * 400) / (400 - Smean)  # Fatigue stress (MPa)
-    
-    return {
-        'T': T, 'τ': τ, 'Sue': Sue, 'Kf': Kf, 
-        'Cnotch': Cnotch, 'Se': Se, 'Sa': Sa, 
-        'Smean': Smean, 'Sf': Sf
-    }
+    Sa = (Smax - Smin) / 2  # Alternating stress (MPa)
+    Smean = (Smax + Smin) / 2  # Mean stress (MPa)
+    Sf = (Sa * Su) / (Su - Smean)  # Fatigue stress (MPa)
 
-def display_results(results):
-    """Display results with enhanced styling"""
-    # Unpack results
-    T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf = (
-        results['T'], results['τ'], results['Sue'], results['Kf'],
-        results['Cnotch'], results['Se'], results['Sa'],
-        results['Smean'], results['Sf']
-    )
-
-    # Custom CSS styling
+    # ========== DISPLAY RESULTS ==========
     st.markdown("""
     <style>
         .metric-box {
@@ -293,8 +283,7 @@ def display_results(results):
     </style>
     """, unsafe_allow_html=True)
 
-    # Main results display
-    st.markdown("<h1 class='header'>Torsional Loading Analysis Results</h1>", unsafe_allow_html=True)
+    st.title("Torsional Loading Analysis Results")
     
     # Metrics in columns
     col1, col2 = st.columns(2)
@@ -331,11 +320,9 @@ def display_results(results):
         })
         st.dataframe(results_df, hide_index=True)
 
-# Main execution
+# Run the app
 if __name__ == "__main__":
-    st.set_page_config(layout="wide", page_title="Shaft Analysis")
-    results = calculate_parameters()  # Calculate first
-    display_results(results)          # Then display
+    main()
 
 st.subheader('Reference')
 st.write('Xian-Kui Zhu, A comparative study of burst failure models for assessing remaining strength of corroded pipelines, Journal of Pipeline Science and Engineering 1 (2021) 36 - 50, https://doi.org/10.1016/j.jpse.2021.01.008')
