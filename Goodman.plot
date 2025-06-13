@@ -4,18 +4,18 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-def create_goodman_plot(sigma_m, sigma_a, UTS, Sy, Se):
+def create_goodman_plot(Sf, Su, Se, Smean, Sa):
     sns.set(style="whitegrid")
     fig, ax = plt.subplots()
 
     # Goodman Line
-    ax.plot([0, UTS], [Se, 0], label="Goodman Line", color='blue')
+    ax.plot([0, Su], [Se, 0], label="Goodman Line", color='blue')
 
     # Soderberg Line
-    ax.plot([0, Sy], [Se, 0], label="Soderberg Line", color='green', linestyle='--')
+    ax.plot([0, Sf], [Su, 0], label="Soderberg Line", color='green', linestyle='--')
 
     # Gerber Curve
-    sigma_m_vals = np.linspace(0, UTS, 100)
+    sigma_m_vals = np.linspace(0, Su, 100)
     gerber_curve = Se * (1 - (sigma_m_vals / UTS)**2)
     ax.plot(sigma_m_vals, gerber_curve, label="Gerber Curve", color='orange', linestyle='-.')
 
