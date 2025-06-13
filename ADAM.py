@@ -244,15 +244,6 @@ if __name__ == "__main__":
     main()
 
 def main():
-    # ========== CALCULATIONS (Replace with your actual formulas) ==========
-    # Example calculations (these would be replaced with your real formulas)
-    P = 1000  # Power in Watts (example value)
-    f = 10    # Rotation per second (example value)
-    d = 0.02  # Shaft diameter in meters (example value)
-    HV = 200  # Vickers hardness (example value)
-    Smin = 50 # Minimum stress in MPa (example value)
-    Smax = 150 # Maximum stress in MPa (example value)
-    Su = 400  # Ultimate stress in MPa (example value)
     
     # Calculate all parameters
     T = P / (2 * math.pi * f)  # Torsional loading (Nm)
