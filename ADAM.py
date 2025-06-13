@@ -98,7 +98,7 @@ Sa = ((Smax - Smin)/2)
 # Calculate mean stress
 Smean = ((Smax + Smin)/2)
 
-#Calculate fatigue stress
+# Calculate fatigue stress
 Sf = (Sa*Su/(Su-Smean))
 
 user_input={'P (W)': "{:.2f}".format(P),
