@@ -287,7 +287,10 @@ def display_results(T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf):
                      f"{Se:.2f} MPa", f"{Kf:.2f}", f"{Cnotch:.2f}"]
         })
         st.dataframe(results_df, hide_index=True)
-display_result ()
+
+if __name__ == "__main__":
+    main()  # This makes the app run
+
 #
 #
 #
