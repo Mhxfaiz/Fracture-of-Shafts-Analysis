@@ -176,6 +176,21 @@ def calculate_results(inputs):
 
 def display_results(inputs, results):
 
+        # Display input parameters in a compact format
+    with st.expander("📋 Input Parameters Summary", expanded=True):
+        input_data = {
+            "Parameter": ["Power (W)", "Rotation (RPS)", "Diameter (mm)", "Hardness (HV)",
+                         "Load Factor", "Size Factor", "Surface Factor", "Temp Factor",
+                         "Reliability Factor", "Stress Conc. Factor", "Notch Radius (mm)",
+                         "Char. Length (mm)", "Min Stress (MPa)", "Max Stress (MPa)",
+                         "Ultimate Stress (MPa)"],
+            "Value": [inputs['power'], inputs['rotation_per_second'], inputs['shaft_diameter'],
+                     inputs['vickers_hardness'], inputs['load_factor'], inputs['size_factor'],
+                     inputs['surface_factor'], inputs['temperature_factor'], 
+                     inputs['reliability_factor'], inputs['stress_concentration_factor'],
+                     inputs['radius'], inputs['characteristic_length'], inputs['minimum_stress'],
+                     inputs['maximum_stress'], inputs['ultimate_stress']]
+        }
         st.dataframe(pd.DataFrame(input_data), hide_index=True)
 
     # Display calculation results in a professional layout
