@@ -142,7 +142,7 @@ def user_input_features():
         'ultimate_stress': ultimate_stress
     }
     
-    data = {
+    data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
             'd (mm)': shaft_diameter,
             'HV (kgf/mm)': vickers_hardness,
@@ -163,7 +163,7 @@ def user_input_features():
 
 df = user_input_features()
 
-P=df['P (W)'].values.item()
+
 f=df['f (RPS)'].values.item()
 d=df['d (mm)'].values.item()
 HV=df['HV (kgf/mm)'].values.item()
