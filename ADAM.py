@@ -29,9 +29,9 @@ def user_input_features():
     stress_concentration_factor = st.sidebar.number_input('Stress Concentration Factor, Kt', value = 0.01)
     radius = st.sidebar.number_input('Radius at the Notch Root, r (mm)', value = 0.01)
     characteristic_length = st.sidebar.number_input('Characteristic Length, ρ (mm)', value = 0.01)
-    minimum_stress = st.sidebar.number_input('Minimum Stress, Smin (MPa)', value = 0.01)
-    maximum_stress = st.sidebar.number_input('Maximum Stress, Smax (MPa)', value = 0.01)
-    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Su (MPa)', value = 0.01)
+    minimum_stress = st.sidebar.number_input('Minimum Stress, Smin (MPa)', value = 0.00)
+    maximum_stress = st.sidebar.number_input('Maximum Stress, Smax (MPa)', value = 0.00)
+    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Su (MPa)', value = 0.00)
     
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
@@ -99,7 +99,7 @@ Sa = ((Smax - Smin)/2)
 Smean = ((Smax + Smin)/2)
 
 # Calculate fatigue stress
-Sf = (Sa / (Su - Smean)) * Su
+Sf = (Sa*Su/(Su - Smean))
 
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
