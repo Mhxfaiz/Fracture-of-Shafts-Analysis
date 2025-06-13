@@ -247,33 +247,29 @@ if __name__ == "__main__":
 #
 #
 
-def display_results():
-    """Display results using variables calculated in the global scope"""
-    try:
-        # Convert shear stress from Pa to MPa for display
-        τ_mpa = τ / 1e6 if 'τ' in globals() else 0
-        
-        # Create metrics display
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.subheader("Loading & Stresses")
-            st.metric("Torsional Loading", f"{T:.2f} Nm" if 'T' in globals() else "N/A")
-            st.metric("Shear Stress", f"{τ_mpa:.2f} MPa")
-            st.metric("Alternating Stress", f"{Sa:.2f} MPa" if 'Sa' in globals() else "N/A")
-            st.metric("Mean Stress", f"{Smean:.2f} MPa" if 'Smean' in globals() else "N/A")
-            st.metric("Fatigue Stress", f"{Sf:.2f} MPa" if 'Sf' in globals() else "N/A")
-        
-        with col2:
-            st.subheader("Material Properties")
-            st.metric("Uncorrected Endurance", f"{Sue:.2f} MPa" if 'Sue' in globals() else "N/A")
-            st.metric("Corrected Endurance", f"{Se:.2f} MPa" if 'Se' in globals() else "N/A")
-            st.metric("Fatigue Notch Factor", f"{Kf:.2f}" if 'Kf' in globals() else "N/A")
-            st.metric("Notch Correction", f"{Cnotch:.2f}" if 'Cnotch' in globals() else "N/A")
+def display_results(T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf):
+    """Improved version that requires all variables to be passed"""
+    τ_mpa = τ / 1e6  # Convert to MPa
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Loading & Stresses")
+        st.metric("Torsional Loading", f"{T:.2f} Nm")
+        st.metric("Shear Stress", f"{τ_mpa:.2f} MPa")
+        st.metric("Alternating Stress", f"{Sa:.2f} MPa")
+        st.metric("Mean Stress", f"{Smean:.2f} MPa")
+        st.metric("Fatigue Stress", f"{Sf:.2f} MPa")
+    
+    with col2:
+        st.subheader("Material Properties")
+        st.metric("Uncorrected Endurance", f"{Sue:.2f} MPa")
+        st.metric("Corrected Endurance", f"{Se:.2f} MPa")
+        st.metric("Fatigue Notch Factor", f"{Kf:.2f}")
+        st.metric("Notch Correction", f"{Cnotch:.2f}")
 
-    except Exception as e:
-        st.error(f"Error displaying results: {str(e)}")
-        st.info("Please ensure all calculations are complete before viewing results")
+# Call it like this:
+display_results(T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf)
 
 st.subheader('Reference')
 st.write('Xian-Kui Zhu, A comparative study of burst failure models for assessing remaining strength of corroded pipelines, Journal of Pipeline Science and Engineering 1 (2021) 36 - 50, https://doi.org/10.1016/j.jpse.2021.01.008')
