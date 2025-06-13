@@ -81,7 +81,7 @@ T = P/(2*(22/7)*f)
 τ = (16*T)/((22/7)*((d/1000)*(d/1000)*(d/1000)))
 
 # Calculate uncorrected endurance strength Sue
-Sue = (1.6*HV) + (0.1*HV)
+Se' = (1.6*HV) + (0.1*HV)
 
 # Calculate fatigue notch factor
 Kf = 1 + ((Kt-1)/(1+m.sqrt(ρ/r)))
