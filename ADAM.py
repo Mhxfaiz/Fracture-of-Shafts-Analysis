@@ -19,102 +19,103 @@ import pandas as pd
 import math
 
 def user_input_features():
-    st.sidebar.header("Input Parameters")
+st.sidebar.header("Input Parameters")
     
-    # Divide inputs into logical sections
-    with st.sidebar.expander("🔧 Shaft Specifications", expanded=True):
-        col1, col2 = st.columns(2)
-        with col1:
-            power = st.number_input('Power, P (W)', 
-                                  min_value=0.01, 
-                                  step=10.0,
-                                  help="Input power transmitted by the shaft")
+# Divide inputs into logical sections
+with st.sidebar.expander("🔧 Shaft Specifications", expanded=True):
+    col1, col2 = st.columns(2)
+with col1:
+    
+    power = st.number_input('Power, P (W)', 
+    min_value=0.01, 
+    step=0.01,
+    help="Input power transmitted by the shaft")
             
-            rotation_per_second = st.number_input('Rotation, f (RPS)', 
-                                               min_value=0.01, 
-                                               step=0.1,
-                                               help="Rotational speed in revolutions per second")
+    rotation_per_second = st.number_input('Rotation, f (RPS)', 
+    min_value=0.01, 
+    step=0.01,
+    help="Rotational speed in revolutions per second")
         
-        with col2:
-            shaft_diameter = st.number_input('Diameter, d (mm)', 
-                                           min_value=0.01, 
-                                           step=0.1,
-                                           help="Diameter of the shaft")
+with col2:
             
-            vickers_hardness = st.number_input('Hardness, HV (kgf/mm²)', 
-                                            min_value=0.01, 
-                                            step=5.0,
-                                            help="Material hardness in Vickers scale")
+    shaft_diameter = st.number_input('Diameter, d (mm)', 
+    min_value=0.01, 
+    step=0.01,
+    help="Diameter of the shaft")
+            
+    vickers_hardness = st.number_input('Hardness, HV (kgf/mm²)', 
+    min_value=0.01, 
+    step=0.01,
+    help="Material hardness in Vickers scale")
 
-    with st.sidebar.expander("📏 Correction Factors", expanded=False):
+with st.sidebar.expander("📏 Correction Factors", expanded=False):
         col1, col2 = st.columns(2)
-        with col1:
-            load_factor = st.number_input('Load Factor, Cload', 
-                                        min_value=0.01, 
-                                        max_value=1.0,
-                                        step=0.01,
-                                        help="Correction factor for loading type")
+with col1:
+    
+    load_factor = st.number_input('Load Factor, Cload', 
+    min_value=0.01, 
+    step=0.01,
+    help="Correction factor for loading type")
             
-            size_factor = st.number_input('Size Factor, Csize', 
-                                       min_value=0.01, 
-                                       max_value=1.0, 
-                                       step=0.01,
-                                       help="Correction factor for size effects")
+    size_factor = st.number_input('Size Factor, Csize', 
+    min_value=0.01, 
+    step=0.01,
+    help="Correction factor for size effects")
             
-            surface_factor = st.number_input('Surface Factor, Csurf', 
-                                           min_value=0.01, 
-                                           max_value=1.0, 
-                                           step=0.01,
-                                           help="Correction factor for surface finish")
+    surface_factor = st.number_input('Surface Factor, Csurf', 
+    min_value=0.01,
+    step=0.01,
+    help="Correction factor for surface finish")
 
-        with col2:
-            temperature_factor = st.number_input('Temp Factor, Ctemp', 
-                                               min_value=0.01, 
-                                               max_value=1.0,
-                                               step=0.01,
-                                               help="Correction factor for temperature")
+with col2:
             
-            reliability_factor = st.number_input('Reliability Factor, Creliab', 
-                                               min_value=0.01, 
-                                               max_value=1.0,
-                                               step=0.01,
-                                               help="Correction factor for reliability")
+    temperature_factor = st.number_input('Temp Factor, Ctemp', 
+    min_value=0.01,
+    step=0.01,
+    help="Correction factor for temperature")
+            
+    reliability_factor = st.number_input('Reliability Factor, Creliab', 
+    min_value=0.01,
+    step=0.01,
+    help="Correction factor for reliability")
 
-    with st.sidebar.expander("⚠️ Stress Parameters", expanded=False):
+with st.sidebar.expander("⚠️ Stress Parameters", expanded=False):
         col1, col2 = st.columns(2)
-        with col1:
-            stress_concentration_factor = st.number_input('Stress Conc. Factor, Kt', 
-                                                       min_value=0.01, 
-                                                       step=0.1,
-                                                       help="Theoretical stress concentration")
+with col1:
+        
+    stress_concentration_factor = st.number_input('Stress Conc. Factor, Kt', 
+    min_value=0.01, 
+    step=0.01,
+    help="Theoretical stress concentration")
             
-            radius = st.number_input('Notch Radius, r (mm)', 
-                                   min_value=0.01, 
-                                   step=0.1,
-                                   help="Radius of curvature at the notch")
+    radius = st.number_input('Notch Radius, r (mm)', 
+    min_value=0.01, 
+    step=0.01,
+    help="Radius of curvature at the notch")
             
-            characteristic_length = st.number_input('Char. Length, ρ (mm)', 
-                                                 min_value=0.01, 
-                                                 step=0.01,
-                                                 help="Material characteristic length")
+    characteristic_length = st.number_input('Char. Length, ρ (mm)', 
+    min_value=0.01, 
+    step=0.01,
+    help="Material characteristic length")
 
-        with col2:
-            minimum_stress = st.number_input('Min Stress, Smin (MPa)', 
-                                          min_value=0.00, 
-                                          step=1.0,
-                                          help="Minimum stress in the cycle")
+with col2:
             
-            maximum_stress = st.number_input('Max Stress, Smax (MPa)', 
-                                          min_value=0.01, 
-                                          step=1.0,
-                                          help="Maximum stress in the cycle")
+    minimum_stress = st.number_input('Min Stress, Smin (MPa)', 
+    min_value=0.00, 
+    step=0.01,
+    help="Minimum stress in the cycle")
             
-            ultimate_stress = st.number_input('Ultimate Stress, Su (MPa)', 
-                                           min_value=0.01,  
-                                           step=1.0,
-                                           help="Ultimate tensile strength")
+    maximum_stress = st.number_input('Max Stress, Smax (MPa)', 
+    min_value=0.01, 
+    step=0.01,
+    help="Maximum stress in the cycle")
+            
+    ultimate_stress = st.number_input('Ultimate Stress, Su (MPa)', 
+    min_value=0.01,  
+    step=0.01,
+    help="Ultimate tensile strength")
 
-    return {
+return {
         'power': power,
         'rotation_per_second': rotation_per_second,
         'shaft_diameter': shaft_diameter,
@@ -174,21 +175,7 @@ def calculate_results(inputs):
     }
 
 def display_results(inputs, results):
-    # Display input parameters in a compact format
-    with st.expander("📋 Input Parameters Summary", expanded=True):
-        input_data = {
-            "Parameter": ["Power (W)", "Rotation (RPS)", "Diameter (mm)", "Hardness (HV)",
-                         "Load Factor", "Size Factor", "Surface Factor", "Temp Factor",
-                         "Reliability Factor", "Stress Conc. Factor", "Notch Radius (mm)",
-                         "Char. Length (mm)", "Min Stress (MPa)", "Max Stress (MPa)",
-                         "Ultimate Stress (MPa)"],
-            "Value": [inputs['power'], inputs['rotation_per_second'], inputs['shaft_diameter'],
-                     inputs['vickers_hardness'], inputs['load_factor'], inputs['size_factor'],
-                     inputs['surface_factor'], inputs['temperature_factor'], 
-                     inputs['reliability_factor'], inputs['stress_concentration_factor'],
-                     inputs['radius'], inputs['characteristic_length'], inputs['minimum_stress'],
-                     inputs['maximum_stress'], inputs['ultimate_stress']]
-        }
+
         st.dataframe(pd.DataFrame(input_data), hide_index=True)
 
     # Display calculation results in a professional layout
