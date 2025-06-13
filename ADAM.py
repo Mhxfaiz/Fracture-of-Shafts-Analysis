@@ -161,7 +161,6 @@ def user_input_features():
     features = pd.DataFrame(data, index=[0])
     return features
 
-display_results()
 df = user_input_features()
 
 P=df['P (W)'].values.item()
