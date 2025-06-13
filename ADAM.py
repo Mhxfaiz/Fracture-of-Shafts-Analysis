@@ -161,11 +161,24 @@ def user_input_features():
     features = pd.DataFrame(data, index=[0])
     return features
 
+display_results()
 df = user_input_features()
 
-st.subheader('Notes')
-st.write('If shaft diameter,d ≤ 8mm, Csize = 1.00')
-st.write('Else if shaft diameter,d > 8mm and ≤ 250mm, Csize = 1.189(pow(d, -0.097))')
+P=df['P (W)'].values.item()
+f=df['f (RPS)'].values.item()
+d=df['d (mm)'].values.item()
+HV=df['HV (kgf/mm)'].values.item()
+Cload=df['Cload'].values.item()
+Csize=df['Csize'].values.item()
+Csurf=df['Csurf'].values.item()
+Ctemp=df['Ctemp'].values.item()
+Creliab=df['Creliab'].values.item()
+Kt=df['Kt'].values.item()
+r=df['r (mm)'].values.item()
+ρ=df['ρ (mm)'].values.item()
+Smin=df['Smin (MPa)'].values.item()
+Smax=df['Smax (MPa)'].values.item()
+Su=df['Su (MPa)'].values.item()
 
 # Calculate torsional loading T
 T = P/(2*(22/7)*f)
