@@ -248,85 +248,32 @@ if __name__ == "__main__":
 #
 
 def display_results():
-    # Apply styling
-    st.markdown("""
-    <style>
-        .metric-box {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .header {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
-        }
-        .stDataFrame {
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # Main results display
-    st.markdown("<h1 class='header'>Torsional Loading Analysis Results</h1>", unsafe_allow_html=True)
-    
-    # Metrics in columns
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("<h3 class='header'>Loading & Stresses</h3>", unsafe_allow_html=True)
-        st.markdown("<div class='metric-box'>", unsafe_allow_html=True)
-        st.metric("Torsional Loading (T)", f"{T:.2f} Nm")
-        st.metric("Shear Stress (τ)", f"{τ/1e6:.2f} MPa")  # Convert Pa to MPa
-        st.metric("Alternating Stress (Sa)", f"{Sa:.2f} MPa")
-        st.metric("Mean Stress (Smean)", f"{Smean:.2f} MPa")
-        st.metric("Fatigue Stress (Sf)", f"{Sf:.2f} MPa")
-        st.markdown("</div>", unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("<h3 class='header'>Material Properties</h3>", unsafe_allow_html=True)
-        st.markdown("<div class='metric-box'>", unsafe_allow_html=True)
-        st.metric("Uncorrected Endurance (Sue)", f"{Sue:.2f} MPa")
-        st.metric("Corrected Endurance (Se)", f"{Se:.2f} MPa")
-        st.metric("Fatigue Notch Factor (Kf)", f"{Kf:.2f}")
-        st.metric("Notch Correction (Cnotch)", f"{Cnotch:.2f}")
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    # Detailed table
-    with st.expander("📊 Detailed Results Table", expanded=True):
-        results_df = pd.DataFrame({
-            "Parameter": ["Torsional Load", "Shear Stress", "Alternating Stress",
-                         "Mean Stress", "Fatigue Stress", "Uncorrected Endurance",
-                         "Corrected Endurance", "Fatigue Notch Factor", "Notch Correction"],
-            "Symbol": ["T", "τ", "Sa", "Smean", "Sf", "Sue", "Se", "Kf", "Cnotch"],
-            "Value": [f"{T:.2f}", f"{τ/1e6:.2f}", f"{Sa:.2f}", f"{Smean:.2f}", 
-                     f"{Sf:.2f}", f"{Sue:.2f}", f"{Se:.2f}", f"{Kf:.2f}", f"{Cnotch:.2f}"],
-            "Units": ["Nm", "MPa", "MPa", "MPa", "MPa", "MPa", "MPa", "-", "-"]
-        })
+    """Display results using variables calculated in the global scope"""
+    try:
+        # Convert shear stress from Pa to MPa for display
+        τ_mpa = τ / 1e6 if 'τ' in globals() else 0
         
-        # Apply styling to dataframe
-        st.dataframe(
-            results_df.style
-            .set_properties(**{'text-align': 'left'})
-            .set_table_styles([{
-                'selector': 'th',
-                'props': [('background-color', '#0068c9'), ('color', 'white')]
-            }]),
-            use_container_width=True
-        )
+        # Create metrics display
+        col1, col2 = st.columns(2)
         
-        # Add download button
-        csv = results_df.to_csv(index=False)
-        st.download_button(
-            label="📥 Download Results",
-            data=csv,
-            file_name='torsional_analysis_results.csv',
-            mime='text/csv'
-        )
-display_results()
+        with col1:
+            st.subheader("Loading & Stresses")
+            st.metric("Torsional Loading", f"{T:.2f} Nm" if 'T' in globals() else "N/A")
+            st.metric("Shear Stress", f"{τ_mpa:.2f} MPa")
+            st.metric("Alternating Stress", f"{Sa:.2f} MPa" if 'Sa' in globals() else "N/A")
+            st.metric("Mean Stress", f"{Smean:.2f} MPa" if 'Smean' in globals() else "N/A")
+            st.metric("Fatigue Stress", f"{Sf:.2f} MPa" if 'Sf' in globals() else "N/A")
+        
+        with col2:
+            st.subheader("Material Properties")
+            st.metric("Uncorrected Endurance", f"{Sue:.2f} MPa" if 'Sue' in globals() else "N/A")
+            st.metric("Corrected Endurance", f"{Se:.2f} MPa" if 'Se' in globals() else "N/A")
+            st.metric("Fatigue Notch Factor", f"{Kf:.2f}" if 'Kf' in globals() else "N/A")
+            st.metric("Notch Correction", f"{Cnotch:.2f}" if 'Cnotch' in globals() else "N/A")
+
+    except Exception as e:
+        st.error(f"Error displaying results: {str(e)}")
+        st.info("Please ensure all calculations are complete before viewing results")
 
 st.subheader('Reference')
 st.write('Xian-Kui Zhu, A comparative study of burst failure models for assessing remaining strength of corroded pipelines, Journal of Pipeline Science and Engineering 1 (2021) 36 - 50, https://doi.org/10.1016/j.jpse.2021.01.008')
