@@ -175,40 +175,6 @@ calculated_fatigue_stress_df=pd.DataFrame(calculated_fatigue_stress, index=[0])
 st.subheader('Calculated Fatigue Stress')
 st.write(calculated_fatigue_stress_df)
 
-
-Pressure = [Pvm, PTresca, P_ASME_B31G, P_DnV, P_PCORRC]
-index = ["Pvm (MPa)", "PTresca (MPa)", "P_ASME_B31G (MPa)", "P_DnV (MPa)", "P_PCORRC (MPa)"]
-df = pd.DataFrame({"Burst Pressure (MPa)": Pressure}, index=index)
-
-# Principle stresses for Maximum Operating Pressure
-P1max = Pop_Max*D/(2*P)
-P2max = Pop_Max*D/(4*P)
-P3max = 0
-
-# Principle stresses for Minimum Operating Pressure
-P1min = Pop_Min*D/(2*P)
-P2min = Pop_Min*D/(4*P)
-P3min = 0
-
-# VM stress Max and Min Operating Pressure
-Sigma_VM_Pipe_Max_Operating_Pressure = (1/m.sqrt(2))*((P1max-P2max)**2+(P2max-P3max)**2+(P3max-P1max)**2)**0.5
-
-Sigma_VM_Pipe_Min_Operating_Pressure = 1/m.sqrt(2)*m.sqrt((P1min-P2min)**2+(P2min-P3min)**2+(P3min-P1min)**2)
-
-calculated_param={'Sigma_VM_Pipe_Max_Operating_Pressure (MPa)': "{:.2f}".format(Sigma_VM_Pipe_Max_Operating_Pressure)}
-calculated_param_df=pd.DataFrame(calculated_param, index=[0])
-st.subheader('Von Mises stress of Maximum Operating Pressure')
-st.write(calculated_param_df)
-
-calculated_param={'Sigma_VM_Pipe_Min_Operating_Pressure (MPa)': "{:.2f}".format(Sigma_VM_Pipe_Min_Operating_Pressure)}
-calculated_param_df=pd.DataFrame(calculated_param, index=[0])
-st.subheader('Von Mises stress of Minimum Operating Pressure')
-st.write(calculated_param_df)
-
-Stresses = [Sigma_VM_Pipe_Max_Operating_Pressure, Sigma_VM_Pipe_Min_Operating_Pressure, Sy, UTS]
-index = ["Svm_Max (MPa)", "Svm_Min (MPa)", "Yield Stress (MPa)", "UTS (MPa)"]
-df = pd.DataFrame({"Stresses (MPa)": Stresses}, index=index)
-
 st.subheader('Reference')
 st.write('Xian-Kui Zhu, A comparative study of burst failure models for assessing remaining strength of corroded pipelines, Journal of Pipeline Science and Engineering 1 (2021) 36 - 50, https://doi.org/10.1016/j.jpse.2021.01.008')
 
