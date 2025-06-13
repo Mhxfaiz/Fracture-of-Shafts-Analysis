@@ -27,7 +27,6 @@ def user_input_features():
         with col1:
             power = st.number_input('Power, P (W)', 
                                   min_value=0.01, 
-                                  value=1000.0, 
                                   step=10.0,
                                   help="Input power transmitted by the shaft")
             
