@@ -32,20 +32,17 @@ def user_input_features():
             
             rotation_per_second = st.number_input('Rotation, f (RPS)', 
                                                min_value=0.01, 
-                                               value=10.0, 
                                                step=0.1,
                                                help="Rotational speed in revolutions per second")
         
         with col2:
             shaft_diameter = st.number_input('Diameter, d (mm)', 
                                            min_value=0.01, 
-                                           value=20.0, 
                                            step=0.1,
                                            help="Diameter of the shaft")
             
             vickers_hardness = st.number_input('Hardness, HV (kgf/mm²)', 
                                             min_value=0.01, 
-                                            value=200.0, 
                                             step=5.0,
                                             help="Material hardness in Vickers scale")
 
@@ -54,37 +51,32 @@ def user_input_features():
         with col1:
             load_factor = st.number_input('Load Factor, Cload', 
                                         min_value=0.01, 
-                                        max_value=1.0, 
-                                        value=0.9, 
+                                        max_value=1.0,
                                         step=0.01,
                                         help="Correction factor for loading type")
             
             size_factor = st.number_input('Size Factor, Csize', 
                                        min_value=0.01, 
                                        max_value=1.0, 
-                                       value=0.85, 
                                        step=0.01,
                                        help="Correction factor for size effects")
             
             surface_factor = st.number_input('Surface Factor, Csurf', 
                                            min_value=0.01, 
                                            max_value=1.0, 
-                                           value=0.8, 
                                            step=0.01,
                                            help="Correction factor for surface finish")
 
         with col2:
             temperature_factor = st.number_input('Temp Factor, Ctemp', 
                                                min_value=0.01, 
-                                               max_value=1.0, 
-                                               value=1.0, 
+                                               max_value=1.0,
                                                step=0.01,
                                                help="Correction factor for temperature")
             
             reliability_factor = st.number_input('Reliability Factor, Creliab', 
                                                min_value=0.01, 
-                                               max_value=1.0, 
-                                               value=0.9, 
+                                               max_value=1.0,
                                                step=0.01,
                                                help="Correction factor for reliability")
 
@@ -93,38 +85,32 @@ def user_input_features():
         with col1:
             stress_concentration_factor = st.number_input('Stress Conc. Factor, Kt', 
                                                        min_value=0.01, 
-                                                       value=1.5, 
                                                        step=0.1,
                                                        help="Theoretical stress concentration")
             
             radius = st.number_input('Notch Radius, r (mm)', 
                                    min_value=0.01, 
-                                   value=2.0, 
                                    step=0.1,
                                    help="Radius of curvature at the notch")
             
             characteristic_length = st.number_input('Char. Length, ρ (mm)', 
                                                  min_value=0.01, 
-                                                 value=0.1, 
                                                  step=0.01,
                                                  help="Material characteristic length")
 
         with col2:
             minimum_stress = st.number_input('Min Stress, Smin (MPa)', 
                                           min_value=0.00, 
-                                          value=50.0, 
                                           step=1.0,
                                           help="Minimum stress in the cycle")
             
             maximum_stress = st.number_input('Max Stress, Smax (MPa)', 
                                           min_value=0.01, 
-                                          value=150.0, 
                                           step=1.0,
                                           help="Maximum stress in the cycle")
             
             ultimate_stress = st.number_input('Ultimate Stress, Su (MPa)', 
-                                           min_value=0.01, 
-                                           value=400.0, 
+                                           min_value=0.01,  
                                            step=1.0,
                                            help="Ultimate tensile strength")
 
