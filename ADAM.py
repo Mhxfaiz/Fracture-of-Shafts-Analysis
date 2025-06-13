@@ -226,6 +226,8 @@ def display_results():
                 }
                 st.dataframe(pd.DataFrame(complete_data), hide_index=True)
 
+display_results()
+
 st.subheader('Reference')
 st.write('Xian-Kui Zhu, A comparative study of burst failure models for assessing remaining strength of corroded pipelines, Journal of Pipeline Science and Engineering 1 (2021) 36 - 50, https://doi.org/10.1016/j.jpse.2021.01.008')
 
