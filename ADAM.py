@@ -247,45 +247,59 @@ import streamlit as st
 import pandas as pd
 import math
 
-def main():
-    st.set_page_config(layout="wide", page_title="Shaft Analysis Tool")
+# Initialize session state if not already done
+if 'calculated' not in st.session_state:
+    st.session_state.calculated = False
+
+def calculate_results():
+    # Get all inputs from session state
+    inputs = st.session_state.inputs
     
-    # ===== USER INPUT SECTION =====
+    # Perform calculations
+    T = inputs['P'] / (2 * math.pi * inputs['f'])  # Torsional loading (Nm)
+    τ = (16 * T) / (math.pi * ((inputs['d']/1000)**3))  # Shear stress (Pa)
+    Sue = (1.6 * inputs['HV']) + (0.1 * inputs['HV'])  # Uncorrected endurance (MPa)
+    Kf = 1 + ((inputs['Kt'] - 1) / (1 + math.sqrt(inputs['ρ']/inputs['r'])))  # Fatigue notch factor
+    Cnotch = 1 / Kf  # Notch correction
+    Se = (inputs['Cload'] * inputs['Csize'] * inputs['Csurf'] * 
+          inputs['Ctemp'] * inputs['Creliab'] * Cnotch * Sue)  # Corrected endurance (MPa)
+    Sa = (inputs['Smax'] - inputs['Smin']) / 2  # Alternating stress (MPa)
+    Smean = (inputs['Smax'] + inputs['Smin']) / 2  # Mean stress (MPa)
+    Sf = (Sa * inputs['Su']) / (inputs['Su'] - Smean)  # Fatigue stress (MPa)
+    
+    # Store results
+    st.session_state.results = {
+        'T': T, 'τ': τ, 'Sue': Sue, 'Kf': Kf, 
+        'Cnotch': Cnotch, 'Se': Se, 'Sa': Sa,
+        'Smean': Smean, 'Sf': Sf
+    }
+    st.session_state.calculated = True
+
+def input_sidebar():
     st.sidebar.header("Input Parameters")
     
-    with st.sidebar.expander("🔧 Shaft Specifications"):
-        P = st.number_input('Power (W)', min_value=0.01, value=1000.0, step=10.0)
-        f = st.number_input('Rotation (RPS)', min_value=0.01, value=10.0, step=0.1)
-        d = st.number_input('Diameter (mm)', min_value=0.01, value=20.0, step=0.1) / 1000  # Convert to meters
-        HV = st.number_input('Vickers Hardness (HV)', min_value=0.01, value=200.0, step=5.0)
+    # Store all inputs in session state
+    st.session_state.inputs = {
+        'P': st.sidebar.number_input('Power (W)', min_value=0.01, value=1000.0, step=10.0),
+        'f': st.sidebar.number_input('Rotation (RPS)', min_value=0.01, value=10.0, step=0.1),
+        'd': st.sidebar.number_input('Diameter (mm)', min_value=0.01, value=20.0, step=0.1),
+        'HV': st.sidebar.number_input('Vickers Hardness (HV)', min_value=0.01, value=200.0, step=5.0),
+        'Cload': st.sidebar.number_input('Load Factor', min_value=0.01, max_value=1.0, value=0.9, step=0.01),
+        'Csize': st.sidebar.number_input('Size Factor', min_value=0.01, max_value=1.0, value=0.85, step=0.01),
+        'Csurf': st.sidebar.number_input('Surface Factor', min_value=0.01, max_value=1.0, value=0.8, step=0.01),
+        'Ctemp': st.sidebar.number_input('Temperature Factor', min_value=0.01, max_value=1.0, value=1.0, step=0.01),
+        'Creliab': st.sidebar.number_input('Reliability Factor', min_value=0.01, max_value=1.0, value=0.9, step=0.01),
+        'Kt': st.sidebar.number_input('Stress Concentration Factor', min_value=1.0, value=1.5, step=0.1),
+        'r': st.sidebar.number_input('Notch Radius (mm)', min_value=0.01, value=2.0, step=0.1),
+        'ρ': st.sidebar.number_input('Characteristic Length (mm)', min_value=0.01, value=0.1, step=0.01),
+        'Smin': st.sidebar.number_input('Minimum Stress (MPa)', value=50.0, step=1.0),
+        'Smax': st.sidebar.number_input('Maximum Stress (MPa)', min_value=st.session_state.inputs['Smin']+0.01 if 'Smin' in st.session_state.inputs else 50.01, value=150.0, step=1.0),
+        'Su': st.sidebar.number_input('Ultimate Stress (MPa)', min_value=0.01, value=400.0, step=1.0)
+    }
     
-    with st.sidebar.expander("📏 Correction Factors"):
-        Cload = st.number_input('Load Factor', min_value=0.01, max_value=1.0, value=0.9, step=0.01)
-        Csize = st.number_input('Size Factor', min_value=0.01, max_value=1.0, value=0.85, step=0.01)
-        Csurf = st.number_input('Surface Factor', min_value=0.01, max_value=1.0, value=0.8, step=0.01)
-        Ctemp = st.number_input('Temperature Factor', min_value=0.01, max_value=1.0, value=1.0, step=0.01)
-        Creliab = st.number_input('Reliability Factor', min_value=0.01, max_value=1.0, value=0.9, step=0.01)
-    
-    with st.sidebar.expander("⚠️ Stress Parameters"):
-        Kt = st.number_input('Stress Concentration Factor', min_value=1.0, value=1.5, step=0.1)
-        r = st.number_input('Notch Radius (mm)', min_value=0.01, value=2.0, step=0.1) / 1000  # Convert to meters
-        ρ = st.number_input('Characteristic Length (mm)', min_value=0.01, value=0.1, step=0.01) / 1000  # Convert to meters
-        Smin = st.number_input('Minimum Stress (MPa)', value=50.0, step=1.0)
-        Smax = st.number_input('Maximum Stress (MPa)', min_value=Smin+0.01, value=150.0, step=1.0)
-        Su = st.number_input('Ultimate Stress (MPa)', min_value=0.01, value=400.0, step=1.0)
+    st.sidebar.button("Calculate", on_click=calculate_results)
 
-    # ===== CALCULATIONS =====
-    T = P / (2 * math.pi * f)  # Torsional loading (Nm)
-    τ = (16 * T) / (math.pi * (d**3))  # Shear stress (Pa)
-    Sue = 1.7 * HV  # Uncorrected endurance strength (MPa)
-    Kf = 1 + ((Kt - 1) / (1 + math.sqrt(ρ / r)))  # Fatigue notch factor
-    Cnotch = 1 / Kf  # Notch correction
-    Se = Cload * Csize * Csurf * Ctemp * Creliab * Cnotch * Sue  # Corrected endurance (MPa)
-    Sa = (Smax - Smin) / 2  # Alternating stress (MPa)
-    Smean = (Smax + Smin) / 2  # Mean stress (MPa)
-    Sf = (Sa * Su) / (Su - Smean)  # Fatigue stress (MPa)
-
-    # ===== RESULTS DISPLAY =====
+def display_results():
     st.markdown("""
     <style>
         .metric-box {
@@ -300,62 +314,63 @@ def main():
             border-bottom: 2px solid #3498db;
             padding-bottom: 5px;
         }
-        .stDataFrame {
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
     </style>
     """, unsafe_allow_html=True)
 
     st.title("Torsional Loading Analysis Results")
     
-    # Main metrics
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("<h3 class='header'>Loading & Stresses</h3>", unsafe_allow_html=True)
-        st.markdown("<div class='metric-box'>", unsafe_allow_html=True)
-        st.metric("Torsional Loading (T)", f"{T:.2f} Nm")
-        st.metric("Shear Stress (τ)", f"{τ/1e6:.2f} MPa")
-        st.metric("Alternating Stress (Sa)", f"{Sa:.2f} MPa")
-        st.metric("Mean Stress (Smean)", f"{Smean:.2f} MPa")
-        st.metric("Fatigue Stress (Sf)", f"{Sf:.2f} MPa")
-        st.markdown("</div>", unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("<h3 class='header'>Material Properties</h3>", unsafe_allow_html=True)
-        st.markdown("<div class='metric-box'>", unsafe_allow_html=True)
-        st.metric("Uncorrected Endurance (Sue)", f"{Sue:.2f} MPa")
-        st.metric("Corrected Endurance (Se)", f"{Se:.2f} MPa")
-        st.metric("Fatigue Notch Factor (Kf)", f"{Kf:.2f}")
-        st.metric("Notch Correction (Cnotch)", f"{Cnotch:.2f}")
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    # Detailed results
-    with st.expander("📊 Detailed Results Table", expanded=True):
-        results_df = pd.DataFrame({
-            "Category": ["Loading"]*5 + ["Material"]*4,
-            "Parameter": ["Torsional Load", "Shear Stress", "Alternating Stress", 
-                         "Mean Stress", "Fatigue Stress", "Uncorrected Endurance",
-                         "Corrected Endurance", "Fatigue Notch Factor", "Notch Correction"],
-            "Symbol": ["T", "τ", "Sa", "Smean", "Sf", "Sue", "Se", "Kf", "Cnotch"],
-            "Value": [f"{T:.2f}", f"{τ/1e6:.2f}", f"{Sa:.2f}", f"{Smean:.2f}", 
-                     f"{Sf:.2f}", f"{Sue:.2f}", f"{Se:.2f}", f"{Kf:.2f}", f"{Cnotch:.2f}"],
-            "Units": ["Nm", "MPa", "MPa", "MPa", "MPa", "MPa", "MPa", "-", "-"]
-        })
-        st.dataframe(results_df, hide_index=True)
+    if st.session_state.calculated:
+        results = st.session_state.results
         
-        # Download button
-        csv = results_df.to_csv(index=False)
-        st.download_button(
-            label="📥 Download Results",
-            data=csv,
-            file_name='shaft_analysis_results.csv',
-            mime='text/csv'
-        )
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("<h3 class='header'>Loading & Stresses</h3>", unsafe_allow_html=True)
+            st.markdown("<div class='metric-box'>", unsafe_allow_html=True)
+            st.metric("Torsional Loading (T)", f"{results['T']:.2f} Nm")
+            st.metric("Shear Stress (τ)", f"{results['τ']/1e6:.2f} MPa")
+            st.metric("Alternating Stress (Sa)", f"{results['Sa']:.2f} MPa")
+            st.metric("Mean Stress (Smean)", f"{results['Smean']:.2f} MPa")
+            st.metric("Fatigue Stress (Sf)", f"{results['Sf']:.2f} MPa")
+            st.markdown("</div>", unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown("<h3 class='header'>Material Properties</h3>", unsafe_allow_html=True)
+            st.markdown("<div class='metric-box'>", unsafe_allow_html=True)
+            st.metric("Uncorrected Endurance (Sue)", f"{results['Sue']:.2f} MPa")
+            st.metric("Corrected Endurance (Se)", f"{results['Se']:.2f} MPa")
+            st.metric("Fatigue Notch Factor (Kf)", f"{results['Kf']:.2f}")
+            st.metric("Notch Correction (Cnotch)", f"{results['Cnotch']:.2f}")
+            st.markdown("</div>", unsafe_allow_html=True)
 
-if __name__ == "__main__":
-    main()
+        with st.expander("📊 Detailed Results Table", expanded=True):
+            results_df = pd.DataFrame({
+                "Parameter": ["Torsional Load", "Shear Stress", "Alternating Stress",
+                            "Mean Stress", "Fatigue Stress", "Uncorrected Endurance",
+                            "Corrected Endurance", "Fatigue Notch Factor", "Notch Correction"],
+                "Symbol": ["T", "τ", "Sa", "Smean", "Sf", "Sue", "Se", "Kf", "Cnotch"],
+                "Value": [f"{results['T']:.2f}", f"{results['τ']/1e6:.2f}", 
+                         f"{results['Sa']:.2f}", f"{results['Smean']:.2f}", 
+                         f"{results['Sf']:.2f}", f"{results['Sue']:.2f}", 
+                         f"{results['Se']:.2f}", f"{results['Kf']:.2f}", 
+                         f"{results['Cnotch']:.2f}"],
+                "Units": ["Nm", "MPa", "MPa", "MPa", "MPa", "MPa", "MPa", "-", "-"]
+            })
+            st.dataframe(results_df, hide_index=True)
+            
+            csv = results_df.to_csv(index=False)
+            st.download_button(
+                label="📥 Download Results",
+                data=csv,
+                file_name='shaft_analysis_results.csv',
+                mime='text/csv'
+            )
+    else:
+        st.info("Please input parameters and click 'Calculate'")
+
+# Main app flow
+input_sidebar()
+display_results()
 
 st.subheader('Reference')
 st.write('Xian-Kui Zhu, A comparative study of burst failure models for assessing remaining strength of corroded pipelines, Journal of Pipeline Science and Engineering 1 (2021) 36 - 50, https://doi.org/10.1016/j.jpse.2021.01.008')
