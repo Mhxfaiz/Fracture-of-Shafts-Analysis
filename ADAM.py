@@ -18,7 +18,7 @@ import streamlit as st
 import pandas as pd
 import math
 
-def user_input_features():
+
 st.sidebar.header("Input Parameters")
     
 # Divide inputs into logical sections
