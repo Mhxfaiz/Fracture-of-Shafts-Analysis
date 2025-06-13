@@ -243,20 +243,49 @@ def main():
 if __name__ == "__main__":
     main()
 
+import streamlit as st
+import pandas as pd
+import math
+
 def main():
+    st.set_page_config(layout="wide", page_title="Shaft Analysis Tool")
     
-    # Calculate all parameters
+    # ===== USER INPUT SECTION =====
+    st.sidebar.header("Input Parameters")
+    
+    with st.sidebar.expander("🔧 Shaft Specifications"):
+        P = st.number_input('Power (W)', min_value=0.01, value=1000.0, step=10.0)
+        f = st.number_input('Rotation (RPS)', min_value=0.01, value=10.0, step=0.1)
+        d = st.number_input('Diameter (mm)', min_value=0.01, value=20.0, step=0.1) / 1000  # Convert to meters
+        HV = st.number_input('Vickers Hardness (HV)', min_value=0.01, value=200.0, step=5.0)
+    
+    with st.sidebar.expander("📏 Correction Factors"):
+        Cload = st.number_input('Load Factor', min_value=0.01, max_value=1.0, value=0.9, step=0.01)
+        Csize = st.number_input('Size Factor', min_value=0.01, max_value=1.0, value=0.85, step=0.01)
+        Csurf = st.number_input('Surface Factor', min_value=0.01, max_value=1.0, value=0.8, step=0.01)
+        Ctemp = st.number_input('Temperature Factor', min_value=0.01, max_value=1.0, value=1.0, step=0.01)
+        Creliab = st.number_input('Reliability Factor', min_value=0.01, max_value=1.0, value=0.9, step=0.01)
+    
+    with st.sidebar.expander("⚠️ Stress Parameters"):
+        Kt = st.number_input('Stress Concentration Factor', min_value=1.0, value=1.5, step=0.1)
+        r = st.number_input('Notch Radius (mm)', min_value=0.01, value=2.0, step=0.1) / 1000  # Convert to meters
+        ρ = st.number_input('Characteristic Length (mm)', min_value=0.01, value=0.1, step=0.01) / 1000  # Convert to meters
+        Smin = st.number_input('Minimum Stress (MPa)', value=50.0, step=1.0)
+        Smax = st.number_input('Maximum Stress (MPa)', min_value=Smin+0.01, value=150.0, step=1.0)
+        Su = st.number_input('Ultimate Stress (MPa)', min_value=0.01, value=400.0, step=1.0)
+
+    # ===== CALCULATIONS =====
     T = P / (2 * math.pi * f)  # Torsional loading (Nm)
     τ = (16 * T) / (math.pi * (d**3))  # Shear stress (Pa)
     Sue = 1.7 * HV  # Uncorrected endurance strength (MPa)
-    Kf = 1 + (1.5 - 1) / (1 + math.sqrt(0.1 / 2))  # Fatigue notch factor
+    Kf = 1 + ((Kt - 1) / (1 + math.sqrt(ρ / r)))  # Fatigue notch factor
     Cnotch = 1 / Kf  # Notch correction
-    Se = 0.9 * 0.85 * 0.8 * 1.0 * 0.9 * Cnotch * Sue  # Corrected endurance (MPa)
+    Se = Cload * Csize * Csurf * Ctemp * Creliab * Cnotch * Sue  # Corrected endurance (MPa)
     Sa = (Smax - Smin) / 2  # Alternating stress (MPa)
     Smean = (Smax + Smin) / 2  # Mean stress (MPa)
     Sf = (Sa * Su) / (Su - Smean)  # Fatigue stress (MPa)
 
-    # ========== DISPLAY RESULTS ==========
+    # ===== RESULTS DISPLAY =====
     st.markdown("""
     <style>
         .metric-box {
@@ -271,19 +300,23 @@ def main():
             border-bottom: 2px solid #3498db;
             padding-bottom: 5px;
         }
+        .stDataFrame {
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
     </style>
     """, unsafe_allow_html=True)
 
     st.title("Torsional Loading Analysis Results")
     
-    # Metrics in columns
+    # Main metrics
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("<h3 class='header'>Loading & Stresses</h3>", unsafe_allow_html=True)
         st.markdown("<div class='metric-box'>", unsafe_allow_html=True)
         st.metric("Torsional Loading (T)", f"{T:.2f} Nm")
-        st.metric("Shear Stress (τ)", f"{τ/1e6:.2f} MPa")  # Convert Pa to MPa
+        st.metric("Shear Stress (τ)", f"{τ/1e6:.2f} MPa")
         st.metric("Alternating Stress (Sa)", f"{Sa:.2f} MPa")
         st.metric("Mean Stress (Smean)", f"{Smean:.2f} MPa")
         st.metric("Fatigue Stress (Sf)", f"{Sf:.2f} MPa")
@@ -298,20 +331,29 @@ def main():
         st.metric("Notch Correction (Cnotch)", f"{Cnotch:.2f}")
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # Detailed table
+    # Detailed results
     with st.expander("📊 Detailed Results Table", expanded=True):
         results_df = pd.DataFrame({
-            "Parameter": ["Torsional Load", "Shear Stress", "Alternating Stress",
+            "Category": ["Loading"]*5 + ["Material"]*4,
+            "Parameter": ["Torsional Load", "Shear Stress", "Alternating Stress", 
                          "Mean Stress", "Fatigue Stress", "Uncorrected Endurance",
                          "Corrected Endurance", "Fatigue Notch Factor", "Notch Correction"],
             "Symbol": ["T", "τ", "Sa", "Smean", "Sf", "Sue", "Se", "Kf", "Cnotch"],
             "Value": [f"{T:.2f}", f"{τ/1e6:.2f}", f"{Sa:.2f}", f"{Smean:.2f}", 
-                      f"{Sf:.2f}", f"{Sue:.2f}", f"{Se:.2f}", f"{Kf:.2f}", f"{Cnotch:.2f}"],
+                     f"{Sf:.2f}", f"{Sue:.2f}", f"{Se:.2f}", f"{Kf:.2f}", f"{Cnotch:.2f}"],
             "Units": ["Nm", "MPa", "MPa", "MPa", "MPa", "MPa", "MPa", "-", "-"]
         })
         st.dataframe(results_df, hide_index=True)
+        
+        # Download button
+        csv = results_df.to_csv(index=False)
+        st.download_button(
+            label="📥 Download Results",
+            data=csv,
+            file_name='shaft_analysis_results.csv',
+            mime='text/csv'
+        )
 
-# Run the app
 if __name__ == "__main__":
     main()
 
