@@ -31,7 +31,7 @@ def user_input_features():
     characteristic_length = st.sidebar.number_input('Characteristic Length, ρ (mm)', value = 0.01)
     minimum_stress = st.sidebar.number_input('Minimum Stress, Smin (MPa)', value = 0.01)
     maximum_stress = st.sidebar.number_input('Maximum Stress, Smax (MPa)', value = 0.01)
-    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Sul (MPa)', value = 0.01)
+    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Su (MPa)', value = 0.01)
     
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
@@ -47,7 +47,7 @@ def user_input_features():
             'ρ (mm)' : characteristic_length,
             'Smin (MPa)' : minimum_stress,
             'Smax (MPa)' : maximum_stress, 
-            'Sul (MPa)' : ultimate_stress, }
+            'Su (MPa)' : ultimate_stress, }
 
     features = pd.DataFrame(data, index=[0])
     return features
@@ -68,7 +68,7 @@ r=df['r (mm)'].values.item()
 ρ=df['ρ (mm)'].values.item()
 Smin=df['Smin (MPa)'].values.item()
 Smax=df['Smax (MPa)'].values.item()
-Sul=df['Sul (MPa)'].values.item()
+Su=df['Su (MPa)'].values.item()
 
 st.subheader('Notes')
 st.write('If shaft diameter,d ≤ 8mm, Csize = 1.00')
@@ -99,7 +99,7 @@ Sa = ((Smax - Smin)/2)
 Smean = ((Smax + Smin)/2)
 
 # Calculate fatigue stress
-Sf = (Sa*Sul/(Sul-Smean))
+Sfa = (Sa*Su/(Su-Smean))
 
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
@@ -170,7 +170,7 @@ st.subheader('Calculated Mean Stress')
 st.write(calculated_mean_stress_df)
 
 # Fatigue Stress
-calculated_fatigue_stress={'Sf (MPa)' :  "{:.2f}".format(Sf)}
+calculated_fatigue_stress={'Sfa (MPa)' :  "{:.2f}".format(Sfa)}
 calculated_fatigue_stress_df=pd.DataFrame(calculated_fatigue_stress, index=[0])
 st.subheader('Calculated Fatigue Stress')
 st.write(calculated_fatigue_stress_df)
