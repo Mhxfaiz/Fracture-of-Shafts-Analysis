@@ -6,4 +6,4 @@ numpy
 pandas
 Pillow
 streamlit
-matplotlib
+matplotlib==3.7.1
