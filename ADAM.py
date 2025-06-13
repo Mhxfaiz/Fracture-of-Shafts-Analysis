@@ -288,9 +288,20 @@ def display_results(T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf):
         })
         st.dataframe(results_df, hide_index=True)
 
+# Add this RIGHT BEFORE the display_results() call
 if __name__ == "__main__":
-    display_results(T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf) 
-
+    # Example calculations (REPLACE with your actual calculations)
+    T = 100.53  # Replace with your T formula
+    τ = 50265000  # Replace with your τ formula
+    Sue = 350  # Replace with your Sue formula
+    Kf = 1.2  # Replace with your Kf formula
+    Cnotch = 0.83  # Replace with your Cnotch formula
+    Se = 290  # Replace with your Se formula
+    Sa = 50  # Replace with your Sa formula
+    Smean = 100  # Replace with your Smean formula
+    Sf = 66.67  # Replace with your Sf formula
+    
+    display_results(T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf)
 #
 #
 #
