@@ -11,7 +11,7 @@ from glob import glob
 st.header("Shaft Fracture Analysis (SFA)")
 
 st.subheader('Dimensional Parameters')
-htp="https://ars.els-cdn.com/content/image/1-s2.0-S135063071000004X-gr3.jpg"
+htp="https://ars.els-cdn.com/content/image/1-s2.0-S135063071000004X-gr1.jpg"
 st.image(htp, caption= "Fig. 1: Schematic illustration of the geometry of a typical corrosion defect.")
 
 st.sidebar.header('User Input Parameters')
