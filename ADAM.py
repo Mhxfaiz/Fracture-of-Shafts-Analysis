@@ -17,21 +17,130 @@ st.image(htp, caption= "Fig. 1. Typical failure locations of the palm oil press 
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
-    power = st.sidebar.number_input('Power, P (W)', value = 0.01)
-    rotation_per_second = st.sidebar.number_input('Rotation Per Second, f (RPS)', value = 0.01)
-    shaft_diameter = st.sidebar.number_input('Shaft Diameter, d (mm)', value = 0.01)
-    vickers_hardness = st.sidebar.number_input('Vickers Hardness, HV (kgf/mm)', value = 0.01)
-    load_factor = st.sidebar.number_input('Load Factor, Cload', value = 0.01)
-    size_factor = st.sidebar.number_input('Size Factor, Csize', value = 0.01)
-    surface_factor = st.sidebar.number_input('Surface Factor, Csurf', value = 0.01)
-    temperature_factor = st.sidebar.number_input('Temperature Factor, Ctemp', value = 0.01)
-    reliability_factor = st.sidebar.number_input('Reliability Factor, Creliab', value = 0.01)
-    stress_concentration_factor = st.sidebar.number_input('Stress Concentration Factor, Kt', value = 0.01)
-    radius = st.sidebar.number_input('Radius at the Notch Root, r (mm)', value = 0.01)
-    characteristic_length = st.sidebar.number_input('Characteristic Length, ρ (mm)', value = 0.01)
-    minimum_stress = st.sidebar.number_input('Minimum Stress, Smin (MPa)', value = 0.00)
-    maximum_stress = st.sidebar.number_input('Maximum Stress, Smax (MPa)', value = 0.00)
-    ultimate_stress = st.sidebar.number_input('Ultimate Stress, Su (MPa)', value = 0.01)
+    st.sidebar.header("Input Parameters")
+    
+    # Divide inputs into logical sections with expandable sections
+    with st.sidebar.expander("🔧 Shaft Specifications", expanded=True):
+        power = st.number_input('Power, P (W)', 
+                              min_value=0.01, 
+                              value=0.01, 
+                              step=0.1,
+                              help="Input power transmitted by the shaft")
+        
+        rotation_per_second = st.number_input('Rotation Per Second, f (RPS)', 
+                                            min_value=0.01, 
+                                            value=0.01, 
+                                            step=0.1,
+                                            help="Rotational speed in revolutions per second")
+        
+        shaft_diameter = st.number_input('Shaft Diameter, d (mm)', 
+                                       min_value=0.01, 
+                                       value=0.01, 
+                                       step=0.1,
+                                       help="Diameter of the shaft")
+
+    with st.sidebar.expander("🔩 Material Properties", expanded=True):
+        vickers_hardness = st.number_input('Vickers Hardness, HV (kgf/mm²)', 
+                                         min_value=0.01, 
+                                         value=0.01, 
+                                         step=1.0,
+                                         help="Material hardness in Vickers scale")
+        
+        ultimate_stress = st.number_input('Ultimate Stress, Su (MPa)', 
+                                        min_value=0.01, 
+                                        value=0.01, 
+                                        step=1.0,
+                                        help="Ultimate tensile strength of the material")
+
+    with st.sidebar.expander("📏 Correction Factors", expanded=False):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            load_factor = st.number_input('Load Factor, Cload', 
+                                        min_value=0.01, 
+                                        max_value=1.0, 
+                                        value=0.01, 
+                                        step=0.01,
+                                        help="Correction factor for loading type")
+            
+            size_factor = st.number_input('Size Factor, Csize', 
+                                         min_value=0.01, 
+                                         max_value=1.0, 
+                                         value=0.01, 
+                                         step=0.01,
+                                         help="Correction factor for size effects")
+            
+            surface_factor = st.number_input('Surface Factor, Csurf', 
+                                           min_value=0.01, 
+                                           max_value=1.0, 
+                                           value=0.01, 
+                                           step=0.01,
+                                           help="Correction factor for surface finish")
+
+        with col2:
+            temperature_factor = st.number_input('Temperature Factor, Ctemp', 
+                                               min_value=0.01, 
+                                               max_value=1.0, 
+                                               value=0.01, 
+                                               step=0.01,
+                                               help="Correction factor for temperature effects")
+            
+            reliability_factor = st.number_input('Reliability Factor, Creliab', 
+                                                min_value=0.01, 
+                                                max_value=1.0, 
+                                                value=0.01, 
+                                                step=0.01,
+                                                help="Correction factor for desired reliability")
+
+    with st.sidebar.expander("⚠️ Stress Concentration", expanded=False):
+        stress_concentration_factor = st.number_input('Stress Concentration Factor, Kt', 
+                                                    min_value=0.01, 
+                                                    value=0.01, 
+                                                    step=0.1,
+                                                    help="Theoretical stress concentration factor")
+        
+        radius = st.number_input('Radius at the Notch Root, r (mm)', 
+                               min_value=0.01, 
+                               value=0.01, 
+                               step=0.1,
+                               help="Radius of curvature at the notch")
+        
+        characteristic_length = st.number_input('Characteristic Length, ρ (mm)', 
+                                              min_value=0.01, 
+                                              value=0.01, 
+                                              step=0.1,
+                                              help="Material characteristic length for notch sensitivity")
+
+    with st.sidebar.expander("📈 Stress Parameters", expanded=False):
+        minimum_stress = st.number_input('Minimum Stress, Smin (MPa)', 
+                                       min_value=0.00, 
+                                       value=0.00, 
+                                       step=0.1,
+                                       help="Minimum stress in the cycle")
+        
+        maximum_stress = st.number_input('Maximum Stress, Smax (MPa)', 
+                                       min_value=0.01, 
+                                       value=0.01, 
+                                       step=0.1,
+                                       help="Maximum stress in the cycle")
+
+    return {
+        'power': power,
+        'rotation_per_second': rotation_per_second,
+        'shaft_diameter': shaft_diameter,
+        'vickers_hardness': vickers_hardness,
+        'load_factor': load_factor,
+        'size_factor': size_factor,
+        'surface_factor': surface_factor,
+        'temperature_factor': temperature_factor,
+        'reliability_factor': reliability_factor,
+        'stress_concentration_factor': stress_concentration_factor,
+        'radius': radius,
+        'characteristic_length': characteristic_length,
+        'minimum_stress': minimum_stress,
+        'maximum_stress': maximum_stress,
+        'ultimate_stress': ultimate_stress
+    }
     
     data = {'P (W)': power,
             'f (RPS)': rotation_per_second,
