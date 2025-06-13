@@ -99,7 +99,7 @@ Sa = ((Smax - Smin)/2)
 Smean = ((Smax + Smin)/2)
 
 # Calculate fatigue stress
-Sfa = (Sa*Su/(Su-Smean))
+Sf = (Sa/(Su-Smean))(Su)
 
 user_input={'P (W)': "{:.2f}".format(P),
             'f (RPS)': "{:.2f}".format(f),
@@ -170,7 +170,7 @@ st.subheader('Calculated Mean Stress')
 st.write(calculated_mean_stress_df)
 
 # Fatigue Stress
-calculated_fatigue_stress={'Sfa (MPa)' :  "{:.2f}".format(Sfa)}
+calculated_fatigue_stress={'Sf (MPa)' :  "{:.2f}".format(Sf)}
 calculated_fatigue_stress_df=pd.DataFrame(calculated_fatigue_stress, index=[0])
 st.subheader('Calculated Fatigue Stress')
 st.write(calculated_fatigue_stress_df)
