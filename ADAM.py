@@ -142,7 +142,7 @@ def user_input_features():
         'ultimate_stress': ultimate_stress
     }
     
-    data = {'P (W)': power,
+    data = {
             'f (RPS)': rotation_per_second,
             'd (mm)': shaft_diameter,
             'HV (kgf/mm)': vickers_hardness,
