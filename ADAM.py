@@ -289,7 +289,7 @@ def display_results(T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf):
         st.dataframe(results_df, hide_index=True)
 
 if __name__ == "__main__":
-    main()  # This makes the app run
+    display_results(T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf) 
 
 #
 #
