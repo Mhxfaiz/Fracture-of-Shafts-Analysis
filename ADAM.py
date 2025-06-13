@@ -12,7 +12,7 @@ st.header("Shaft Fracture Analysis (SFA)")
 
 st.subheader('Dimensional Parameters')
 htp="https://ars.els-cdn.com/content/image/1-s2.0-S135063071000004X-gr1.jpg"
-st.image(htp, caption= "Fig. 1: Schematic illustration of the geometry of a typical corrosion defect.")
+st.image(htp, caption= "Fig. 1. Typical failure locations of the palm oil press machine and the model and keyway of the worm screw.")
 
 st.sidebar.header('User Input Parameters')
 
