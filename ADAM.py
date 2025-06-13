@@ -14,10 +14,6 @@ st.subheader('Dimensional Parameters')
 htp="https://ars.els-cdn.com/content/image/1-s2.0-S135063071000004X-gr1.jpg"
 st.image(htp, caption= "Fig. 1. Typical failure locations of the palm oil press machine and the model and keyway of the worm screw.")
 
-import streamlit as st
-import pandas as pd
-import math
-
 def user_input_features():
 st.sidebar.header("Input Parameters")
     
