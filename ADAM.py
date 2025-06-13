@@ -121,59 +121,110 @@ user_input_df=pd.DataFrame(user_input, index=[0])
 st.subheader('User Input Parameters')
 st.write(user_input_df)
 
-# Torsional Loading
-calculated_torsional_loading={'T (Nm)': "{:.2f}".format(T)}
-calculated_torsional_loading_df=pd.DataFrame(calculated_torsional_loading, index=[0])
-st.subheader('Calculated Torsional Loading')
-st.write(calculated_torsional_loading_df)
-
-# Shear Stress
-calculated_shear_stress={'τ (Pa)': "{:.2f}".format(τ)}
-calculated_shear_stress_df=pd.DataFrame(calculated_shear_stress, index=[0])
-st.subheader('Calculated Shear Stress')
-st.write(calculated_shear_stress_df)
-
-# Uncorrected Endurance Strength
-calculated_uncorrected_endurance_strength={'Sue (MPa)': "{:.2f}".format(Sue)}
-calculated_uncorrected_endurance_strength_df=pd.DataFrame(calculated_uncorrected_endurance_strength, index=[0])
-st.subheader('Calculated Uncorrected Endurance Strength')
-st.write(calculated_uncorrected_endurance_strength_df)
-
-# Fatigue Notch Factor
-calculated_fatigue_notch_factor={'Kf': "{:.2f}".format(Kf)}
-calculated_fatigue_notch_factor_df=pd.DataFrame(calculated_fatigue_notch_factor, index=[0])
-st.subheader('Calculated Fatigue Notch Factor')
-st.write(calculated_fatigue_notch_factor_df)
-
-# Notch Factor Correction
-calculated_notch_factor_correction={'Cnotch': "{:.2f}".format(Cnotch)}
-calculated_notch_factor_correction_df=pd.DataFrame(calculated_notch_factor_correction, index=[0])
-st.subheader('Calculated Notch Factor Correction')
-st.write(calculated_notch_factor_correction_df)
-
-# Corrected Endurance Factor
-calculated_corrected_endurance_factor={'Se (MPa)' : "{:.2f}".format(Se)}
-calculated_corrected_endurance_factor_df=pd.DataFrame(calculated_corrected_endurance_factor, index=[0])
-st.subheader('Calculated Corrected Endurance Factor')
-st.write(calculated_corrected_endurance_factor_df)
-
-# Alternating Stress
-calculated_alternating_stress={'Sa (MPa)' : "{:.2f}".format(Sa)}
-calculated_alternating_stress_df=pd.DataFrame(calculated_alternating_stress, index=[0])
-st.subheader('Calculated Alternating Stress')
-st.write(calculated_alternating_stress_df)
-
-# Mean Stress
-calculated_mean_stress={'Smean (MPa)' : "{:.2f}".format(Smean)}
-calculated_mean_stress_df=pd.DataFrame(calculated_mean_stress, index=[0])
-st.subheader('Calculated Mean Stress')
-st.write(calculated_mean_stress_df)
-
-# Fatigue Stress
-calculated_fatigue_stress={'Sf (MPa)' :  "{:.2f}".format(Sf)}
-calculated_fatigue_stress_df=pd.DataFrame(calculated_fatigue_stress, index=[0])
-st.subheader('Calculated Fatigue Stress')
-st.write(calculated_fatigue_stress_df)
+def display_results():
+    # Create a container for better organization
+    with st.container():
+        st.header("Torsional Loading Analysis Results")
+        
+        # Divide results into logical sections with columns
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Loading and Stress Section
+            st.subheader("Loading & Stresses")
+            
+            # Torsional Loading
+            st.metric(label="Torsional Loading (T)", 
+                     value=f"{T:.2f} Nm",
+                     help="Calculated torsional moment")
+            
+            # Shear Stress
+            st.metric(label="Shear Stress (τ)", 
+                     value=f"{τ:.2f} Pa",
+                     help="Calculated shear stress")
+            
+            # Alternating Stress
+            st.metric(label="Alternating Stress (Sa)", 
+                     value=f"{Sa:.2f} MPa",
+                     help="Calculated alternating stress")
+            
+            # Mean Stress
+            st.metric(label="Mean Stress (Smean)", 
+                     value=f"{Smean:.2f} MPa",
+                     help="Calculated mean stress")
+            
+            # Fatigue Stress
+            st.metric(label="Fatigue Stress (Sf)", 
+                     value=f"{Sf:.2f} MPa",
+                     help="Calculated fatigue stress")
+        
+        with col2:
+            # Material Properties Section
+            st.subheader("Material Properties")
+            
+            # Uncorrected Endurance Strength
+            st.metric(label="Uncorrected Endurance Strength (Sue)", 
+                     value=f"{Sue:.2f} MPa",
+                     help="Material's uncorrected endurance limit")
+            
+            # Corrected Endurance Factor
+            st.metric(label="Corrected Endurance Factor (Se)", 
+                     value=f"{Se:.2f} MPa",
+                     help="Corrected endurance strength")
+            
+            # Fatigue Notch Factor
+            st.metric(label="Fatigue Notch Factor (Kf)", 
+                     value=f"{Kf:.2f}",
+                     help="Stress concentration factor for fatigue")
+            
+            # Notch Factor Correction
+            st.metric(label="Notch Factor Correction (Cnotch)", 
+                     value=f"{Cnotch:.2f}",
+                     help="Correction factor for notches")
+        
+        # Add a divider
+        st.divider()
+        
+        # Detailed Data Section (expandable)
+        with st.expander("View Detailed Data Tables"):
+            st.subheader("Detailed Results")
+            
+            # Create tabs for different result categories
+            tab1, tab2, tab3 = st.tabs(["Loading & Stresses", "Material Properties", "All Results"])
+            
+            with tab1:
+                st.write("**Loading and Stress Values**")
+                loading_data = {
+                    "Parameter": ["Torsional Loading (Nm)", "Shear Stress (Pa)", 
+                                "Alternating Stress (MPa)", "Mean Stress (MPa)", 
+                                "Fatigue Stress (MPa)"],
+                    "Value": [T, τ, Sa, Smean, Sf]
+                }
+                st.dataframe(pd.DataFrame(loading_data), hide_index=True)
+            
+            with tab2:
+                st.write("**Material Property Values**")
+                material_data = {
+                    "Parameter": ["Uncorrected Endurance Strength (MPa)", 
+                                "Corrected Endurance Factor (MPa)",
+                                "Fatigue Notch Factor", 
+                                "Notch Factor Correction"],
+                    "Value": [Sue, Se, Kf, Cnotch]
+                }
+                st.dataframe(pd.DataFrame(material_data), hide_index=True)
+            
+            with tab3:
+                st.write("**Complete Results**")
+                complete_data = {
+                    "Parameter": ["Torsional Loading", "Shear Stress", 
+                                 "Uncorrected Endurance Strength", "Fatigue Notch Factor",
+                                 "Notch Factor Correction", "Corrected Endurance Factor",
+                                 "Alternating Stress", "Mean Stress", "Fatigue Stress"],
+                    "Symbol": ["T", "τ", "Sue", "Kf", "Cnotch", "Se", "Sa", "Smean", "Sf"],
+                    "Value": [T, τ, Sue, Kf, Cnotch, Se, Sa, Smean, Sf],
+                    "Units": ["Nm", "Pa", "MPa", "", "", "MPa", "MPa", "MPa", "MPa"]
+                }
+                st.dataframe(pd.DataFrame(complete_data), hide_index=True)
 
 st.subheader('Reference')
 st.write('Xian-Kui Zhu, A comparative study of burst failure models for assessing remaining strength of corroded pipelines, Journal of Pipeline Science and Engineering 1 (2021) 36 - 50, https://doi.org/10.1016/j.jpse.2021.01.008')
