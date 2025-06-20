@@ -64,12 +64,12 @@ def user_input_features():
         col1, col2 = st.columns(2)
         with col1:
             power = st.number_input('Power, P (W)', 
-                min_value=0.00, 
+                min_value=0.01, 
                 step=0.01,
                 help="Input power transmitted by the shaft")
             
             rotation_per_second = st.number_input('Rotation, f (RPS)', 
-                min_value=0.00, 
+                min_value=0.01, 
                 step=0.01,
                 help="Rotational speed in revolutions per second")
         
