@@ -1,4 +1,8 @@
-numpy==1.26.4
-matplotlib==3.8.4
-scipy==1.13.0
-pandas==2.2.1
+#numpy==1.26.4
+#matplotlib==3.8.4
+#scipy==1.13.0
+#pandas==2.2.1
+numpy
+pandas
+matplotlib
+streamlit
