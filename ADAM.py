@@ -8,6 +8,7 @@ from glob import glob
 from pickle import load
 import pickle
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Custom CSS for styling
 st.markdown("""
@@ -277,13 +278,96 @@ def main():
     
     # Display results
     display_results(inputs, results)
+    #
+#
+#
+#
+
+def plot_goodman_diagram(Se, Su, Sa, Smean, Sf):
+    """Plot Modified Goodman diagram with the calculated stress points."""
+    # Create figure and axis
+    fig, ax = plt.subplots(figsize=(8, 6))
     
+    # Set up the axes limits
+    max_mean = Su * 1.1
+    max_alt = Se * 1.1
+    ax.set_xlim(0, max_mean)
+    ax.set_ylim(0, max_alt)
+    
+    # Plot Goodman line (Se to Su)
+    mean_stress = np.linspace(0, Su, 100)
+    goodman_line = Se * (1 - mean_stress / Su)
+    ax.plot(mean_stress, goodman_line, 'b-', linewidth=2, label='Goodman Line')
+    
+    # Plot horizontal line for Se (fully reversed)
+    ax.hlines(Se, 0, Su, colors='g', linestyles='dashed', linewidth=1.5, label='Endurance Limit (Se)')
+    
+    # Plot vertical line for Su (ultimate strength)
+    ax.vlines(Su, 0, Se, colors='r', linestyles='dashed', linewidth=1.5, label='Ultimate Strength (Su)')
+    
+    # Plot the calculated stress point
+    ax.plot(Smean, Sa, 'ro', markersize=8, label='Calculated Stress')
+    
+    # Add a line from origin to the stress point
+    ax.plot([0, Smean], [0, Sa], 'r--', linewidth=1)
+    
+    # Add safety factor line if Sf is calculated
+    if Sf > 0:
+        sf_line_x = np.linspace(0, Smean*1.5, 100)
+        sf_line_y = (Sa/Smean) * sf_line_x
+        ax.plot(sf_line_x, sf_line_y, 'm--', linewidth=1, label=f'Safety Factor = {Se/Sf:.2f}')
+    
+    # Add labels and title
+    ax.set_xlabel('Mean Stress (MPa)', fontsize=12)
+    ax.set_ylabel('Alternating Stress (MPa)', fontsize=12)
+    ax.set_title('Modified Goodman Diagram for Torsional Loading', fontsize=14)
+    ax.grid(True, linestyle='--', alpha=0.7)
+    ax.legend(loc='upper right')
+    
+    return fig
+
+# Add this to your display_results function, just before the References section:
+def display_results(inputs, results):
+    # ... (keep all your existing code)
+    
+    # Add Goodman Diagram
+    st.markdown("<h2 class='header'>📈 Modified Goodman Diagram</h2>", unsafe_allow_html=True)
+    
+    # Create the plot
+    fig = plot_goodman_diagram(
+        Se=results['Se'],
+        Su=inputs['ultimate_stress'],
+        Sa=results['Sa'],
+        Smean=results['Smean'],
+        Sf=results['Sf']
+    )
+    
+    # Display the plot in Streamlit
+    st.pyplot(fig)
+    
+    # Add interpretation
+    st.markdown("""
+    <div style="background-color:#f0f8ff;padding:15px;border-radius:10px;margin-top:20px;">
+        <h4>Diagram Interpretation</h4>
+        <ul>
+            <li>The <span style="color:blue">blue line</span> shows the Goodman failure criterion</li>
+            <li>The <span style="color:red">red point</span> represents your calculated stress condition</li>
+            <li>If the point is below the Goodman line, the design is theoretically safe against fatigue</li>
+            <li>The <span style="color:magenta">magenta dashed line</span> shows the safety factor margin</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    #
+#
+#
+#
     # References and resources
     st.markdown("---")
     st.subheader('📚 References & Resources')
     
     ref_col1, ref_col2 = st.columns(2)
-    
+
     with ref_col1:
         st.markdown("""
         **Reference Paper**  
