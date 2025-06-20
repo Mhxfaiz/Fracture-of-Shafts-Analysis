@@ -1,3 +1,54 @@
+# ---- START OF MATPLOTLIB FIX ----
+import sys
+import os
+import platform
+
+# Configure environment before any other imports
+os.environ["MPLBACKEND"] = "Agg"  # Use non-interactive backend
+
+# Add package directories to path
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
+# Special handling for Windows
+if platform.system() == "Windows":
+    os.environ["PATH"] = (
+        os.path.join(os.path.dirname(sys.executable), "Library", "bin") + 
+        os.pathsep + os.environ["PATH"]
+)
+
+# Attempt matplotlib import with fallbacks
+try:
+    import matplotlib
+    matplotlib.rcParams["backend"] = "Agg"  # Lock to Agg backend
+    import matplotlib.pyplot as plt
+except ImportError:
+    try:
+        # Try system-level fallback
+        sys.path.append("/usr/local/lib/python3.10/dist-packages")
+        sys.path.append("/usr/lib/python3/dist-packages")
+        import matplotlib
+        import matplotlib.pyplot as plt
+    except ImportError:
+        # Final emergency fallback
+        print("Matplotlib not found - using basic numerical output")
+        class plt:
+            class subplots:
+                def __init__(self, *args, **kwargs):
+                    self.fig = None
+                    self.ax = None
+                def __enter__(self):
+                    return (self.fig, self.ax)
+                def __exit__(self, *args):
+                    pass
+            @staticmethod
+            def show():
+                print("Plot display unavailable")
+            @staticmethod
+            def savefig(fname):
+                print(f"Plot saved virtually to {fname}")
+
+# ---- END OF MATPLOTLIB FIX ----
+
 import streamlit as st
 import pandas as pd
 import math as m
@@ -393,3 +444,37 @@ def display_results(inputs, results):
 
 if __name__ == "__main__":
     main()
+
+def verify_environment():
+    """Run diagnostic checks"""
+    print("\n" + "="*50)
+    print("Environment Verification")
+    print("="*50)
+    
+    # Python info
+    print(f"Python: {sys.version.split()[0]}")
+    print(f"Executable: {sys.executable}")
+    
+    # Package versions
+    for pkg in ['numpy', 'matplotlib', 'scipy', 'pandas']:
+        try:
+            version = __import__(pkg).__version__
+            print(f"{pkg:>10}: {version}")
+        except ImportError:
+            print(f"{pkg:>10}: NOT INSTALLED")
+    
+    # Matplotlib test
+    try:
+        import matplotlib as mpl
+        fig, ax = plt.subplots()
+        ax.plot([0,1], [0,1])
+        fig.savefig("environment_test.png")
+        print("✓ Matplotlib plot test successful")
+    except Exception as e:
+        print(f"Matplotlib test failed: {str(e)}")
+    
+    print("="*50 + "\n")
+
+if __name__ == "__main__":
+    # Add at end of main function
+    verify_environment()
