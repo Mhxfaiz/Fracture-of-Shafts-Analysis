@@ -8,7 +8,6 @@ from glob import glob
 from pickle import load
 import pickle
 import numpy as np
-import matplotlib
 
 # Custom CSS for styling
 st.markdown("""
