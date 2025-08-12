@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import math
-import plotly.graph_objects as go
 from streamlit_extras.metric_cards import style_metric_cards  # Extra styling
 
 # ====== 🎨 Custom CSS for Dark Neon Theme ======
@@ -140,3 +139,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
