@@ -59,7 +59,6 @@ from glob import glob
 from pickle import load
 import pickle
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Custom CSS for styling
 st.markdown("""
@@ -478,3 +477,4 @@ def verify_environment():
 if __name__ == "__main__":
     # Add at end of main function
     verify_environment()
+
