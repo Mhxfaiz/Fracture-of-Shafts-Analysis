@@ -1,54 +1,3 @@
-# ---- START OF MATPLOTLIB FIX ----
-import sys
-import os
-import platform
-
-# Configure environment before any other imports
-os.environ["MPLBACKEND"] = "Agg"  # Use non-interactive backend
-
-# Add package directories to path
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
-
-# Special handling for Windows
-if platform.system() == "Windows":
-    os.environ["PATH"] = (
-        os.path.join(os.path.dirname(sys.executable), "Library", "bin") + 
-        os.pathsep + os.environ["PATH"]
-)
-
-# Attempt matplotlib import with fallbacks
-try:
-    import matplotlib
-    matplotlib.rcParams["backend"] = "Agg"  # Lock to Agg backend
-    import matplotlib.pyplot as plt
-except ImportError:
-    try:
-        # Try system-level fallback
-        sys.path.append("/usr/local/lib/python3.10/dist-packages")
-        sys.path.append("/usr/lib/python3/dist-packages")
-        import matplotlib
-        import matplotlib.pyplot as plt
-    except ImportError:
-        # Final emergency fallback
-        print("Matplotlib not found - using basic numerical output")
-        class plt:
-            class subplots:
-                def __init__(self, *args, **kwargs):
-                    self.fig = None
-                    self.ax = None
-                def __enter__(self):
-                    return (self.fig, self.ax)
-                def __exit__(self, *args):
-                    pass
-            @staticmethod
-            def show():
-                print("Plot display unavailable")
-            @staticmethod
-            def savefig(fname):
-                print(f"Plot saved virtually to {fname}")
-
-# ---- END OF MATPLOTLIB FIX ----
-
 import streamlit as st
 import pandas as pd
 import math as m
@@ -329,97 +278,6 @@ def main():
     # Display results
     display_results(inputs, results)
 
-    #
-    #
-    #
-    #
-    
-def plot_goodman_diagram(Sa, Smean, Se, Su):
-    """Generate a Modified Goodman diagram"""
-    fig, ax = plt.subplots(figsize=(8, 6))
-    
-    # Plot axes
-    ax.axhline(y=0, color='k', linewidth=0.5)
-    ax.axvline(x=0, color='k', linewidth=0.5)
-    
-    # Plot Goodman line (from Se on y-axis to Su on x-axis)
-    x = [0, Su]
-    y = [Se, 0]
-    ax.plot(x, y, 'b-', label='Goodman Line')
-    
-    # Plot points for different stress ratios (example data from your image)
-    example_data = {
-        'R1': {'Smean': 114.58, 'Sa': 21.54},
-        'R2': {'Smean': 121.13, 'Sa': 12.92}
-    }
-    
-    # Plot example data points
-    for key, value in example_data.items():
-        ax.plot(value['Smean'], value['Sa'], 'ro')
-        ax.text(value['Smean'], value['Sa'], f" {key}", verticalalignment='bottom')
-    
-    # Plot current calculation point
-    ax.plot(Smean, Sa, 'go', markersize=8, label='Current Design')
-    ax.text(Smean, Sa, " Your Design", verticalalignment='bottom')
-    
-    # Add labels and title
-    ax.set_xlabel('Mean Stress, Smean (MPa)')
-    ax.set_ylabel('Alternating Stress, Sa (MPa)')
-    ax.set_title('Modified Goodman Diagram')
-    ax.grid(True, linestyle='--', alpha=0.7)
-    ax.legend()
-    
-    # Set limits to show the full diagram
-    ax.set_xlim(0, Su*1.1)
-    ax.set_ylim(0, Se*1.1)
-    
-    return fig
-
-# Add this to your display_results function, right before the References section:
-def display_results(inputs, results):
-    # ... [your existing code] ...
-    
-    # Safety factor calculation
-    safety_factor = results['Se'] / (results['Sf'] if results['Sf'] != 0 else 1)
-    st.markdown(f"""
-    <div style="background-color:{"#d4edda" if safety_factor > 1 else "#f8d7da"};
-                padding:15px;
-                border-radius:10px;
-                margin-top:20px;
-                border-left: 5px solid {"#28a745" if safety_factor > 1 else "#dc3545"}">
-        <h4 style="color:{"#155724" if safety_factor > 1 else "#721c24"}">
-            {"✅ Safe Design" if safety_factor > 1 else "⚠️ Design Concern"}
-        </h4>
-        <p>Safety Factor: <strong>{safety_factor:.2f}</strong></p>
-        <small>{"Design is safe (SF > 1)" if safety_factor > 1 else "Design may be unsafe (SF ≤ 1)"}</small>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Add Goodman Diagram
-    st.markdown("---")
-    st.subheader("Modified Goodman Diagram")
-    st.write("Visualization of the fatigue analysis using the Modified Goodman criterion:")
-    
-    fig = plot_goodman_diagram(
-        Sa=results['Sa'],
-        Smean=results['Smean'],
-        Se=results['Se'],
-        Su=inputs['ultimate_stress']
-    )
-    st.pyplot(fig)
-    
-    # Add explanation
-    st.markdown("""
-    *Diagram Interpretation:*
-    - The blue line represents the Modified Goodman failure criterion
-    - Points below the line are considered safe against fatigue failure
-    - The green point shows your current design parameters
-    - Red points are example data points from reference literature
-    """)
-
-    #
-    #
-    #
     # References and resources
     st.markdown("---")
     st.subheader('📚 References & Resources')
@@ -477,4 +335,5 @@ def verify_environment():
 if __name__ == "__main__":
     # Add at end of main function
     verify_environment()
+
 
