@@ -4,7 +4,6 @@ import math
 from PIL import Image
 import os
 import sys
-import matplotlib.pyplot as plt
 
 # Custom CSS for vibrant styling
 st.markdown("""
@@ -419,3 +418,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
